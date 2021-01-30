@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
 const listSchema = mongoose.Schema({
-    user: {
+    userId: {
         type: mongoose.Types.ObjectId,
         required: true
     },

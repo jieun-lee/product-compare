@@ -1,14 +1,13 @@
-export default (state = [], action) => {
+export default (state = {}, action) => {
     switch (action.type) {
         case 'GET_LISTS':
             return action.payload;
         case 'CREATE_LIST':
-            return [...state, action.payload];
         case 'GET_LIST':
         case 'UPDATE_LIST':
-            return state.map((list) => list._id === action.payload._id ? action.payload : list);
+            return {...state, ...action.payload};
         case 'DELETE_LIST':
-            return state.filter((list) => list._id !== action.payload);
+            return {...state, [action.payload]: undefined};
         default:
             return state;
     }

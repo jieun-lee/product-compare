@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
 const itemSchema = mongoose.Schema({
-    list: {
+    listId: {
         type: mongoose.Types.ObjectId,
         required: true
     },
@@ -20,12 +20,18 @@ const itemSchema = mongoose.Schema({
             default: new Date()
         }
     }],
-    isFavourite: Boolean,
+    isFavourite: {
+        type: Boolean,
+        default: false
+    },
     rating: {
         type: Number,
         default: 0
     },
-    isArchived: Boolean
+    isArchived: {
+        type: Boolean,
+        default: false
+    }
 });
 
 const Item = mongoose.model('Item', itemSchema);

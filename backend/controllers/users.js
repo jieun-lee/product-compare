@@ -1,5 +1,7 @@
-import User from '../models/user.js';
 import mongoose from 'mongoose';
+import User from '../models/user.js';
+import List from '../models/list.js';
+import { arrayToObject } from '../utils/index.js';
 
 /**
  * Creates a user with the given object
@@ -62,8 +64,8 @@ export const deleteUser = async (req, res) => {
 export const getLists = async (req, res) => {
     const { userId } = req.params;
     try {
-        const lists = await User.find({ userId: userId });
-        res.status(200).json(lists);
+        const lists = await List.find({ userId: userId });
+        res.status(200).json(arrayToObject(lists));
     } catch (error) {
         res.status(404).json({ message: error.message });
     }

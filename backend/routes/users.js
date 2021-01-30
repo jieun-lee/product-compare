@@ -9,6 +9,6 @@ router.post('/', createUser);
 router.get('/:username', getUser);
 router.patch('/:userId', updateUser);
 router.delete('/:userId', deleteUser);
-router.get('/:userId', getLists);
+router.get('/:userId/lists', getLists);
 
 export default router;

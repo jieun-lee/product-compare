@@ -1,5 +1,7 @@
 import mongoose from 'mongoose';
 import List from '../models/list.js';
+import Item from '../models/item.js';
+import { arrayToObject } from '../utils/index.js';
 
 /**
  * Creates a list with the given object
@@ -7,9 +9,10 @@ import List from '../models/list.js';
  */
 export const createList = async (req, res) => {
     const list = new List(req.body);
+    const listId = list._id;
     try {
         await list.save();
-        res.status(201).json(list);
+        res.status(201).json({ [listId]: list });
     } catch (error) {
         res.status(409).json({ message: error.message });
     }
@@ -24,7 +27,7 @@ export const getList = async (req, res) => {
     if (!mongoose.Types.ObjectId.isValid(listId)) return res.status(404).send('Invalid list id');
     try {
         const list = await List.findById(listId);
-        res.status(200).json(list);
+        res.status(200).json({ [listId]: list });
     } catch (error) {
         res.status(404).json({ message: error.message });
     }
@@ -40,7 +43,7 @@ export const updateList = async (req, res) => {
     const list = req.body;
     if (!mongoose.Types.ObjectId.isValid(listId)) return res.status(404).send('Invalid list id');
     const updatedList = await User.findByIdAndUpdate(listId, list, { new: true });
-    res.json(updatedList);
+    res.json({ [listId]: updatedList });
 }
 
 /**
@@ -62,8 +65,8 @@ export const deleteList = async (req, res) => {
 export const getItems = async (req, res) => {
     const { listId } = req.params;
     try {
-        const items = await User.find({ listId: listId });
-        res.status(200).json(items);
+        const items = await Item.find({ listId: listId });
+        res.status(200).json(arrayToObject(items));
     } catch (error) {
         res.status(404).json({ message: error.message });
     }

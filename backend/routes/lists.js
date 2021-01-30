@@ -9,6 +9,6 @@ router.get('/:listId', getList);
 router.patch('/:listId', updateList);
 router.delete('/:listId', deleteList);
 
-router.post('/:listId/items/', createItem);
+router.post('/:listId/items', createItem);
 
 export default router;

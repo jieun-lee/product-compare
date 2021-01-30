@@ -1,5 +1,5 @@
 import express from 'express';
-import { createList, getList, updateList, deleteList } from '../controllers/lists.js';
+import { createList, getList, updateList, deleteList, getItems } from '../controllers/lists.js';
 
 const router = express.Router();
 
@@ -9,5 +9,6 @@ router.post('/', createList),
 router.get('/:listId', getList);
 router.patch('/:listId', updateList);
 router.delete('/:listId', deleteList);
+router.get('/:listId', getItems);
 
 export default router;

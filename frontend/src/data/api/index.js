@@ -12,13 +12,15 @@ export const updateUser = (userId, user) => axios.patch(`${USERS_URL}/${userId}`
 export const deleteUser = (userId) => axios.delete(`${USERS_URL}/${userId}`);
 
 // Lists
-export const createList = (userId, list) => axios.post(`${USERS_URL}/${userId}/lists`, list);
+export const getLists = (userId) => axios.get(`${USERS_URL}/${userId}`);
+export const createList = (list) => axios.post(LISTS_URL, list);
 export const getList = (listId) => axios.get(`${LISTS_URL}/${listId}`);
 export const updateList = (listId, list) => axios.patch(`${LISTS_URL}/${listId}`, list);
 export const deleteList = (listId) => axios.delete(`${LISTS_URL}/${listId}`);
 
 // Items
-export const createItem = (listId, item) => axios.post(`${LISTS_URL}/${listId}/items`, item);
+export const getItems = (listId) => axios.get(`${LISTS_URL}/${listId}`);
+export const createItem = (item) => axios.post(ITEMS_URL, item);
 export const getItem = (itemId) => axios.get(`${ITEMS_URL}/${itemId}`);
 export const updateItem = (itemId, item) => axios.patch(`${ITEMS_URL}/${itemId}`, item);
 export const deleteItem = (itemId) => axios.delete(`${ITEMS_URL}/${itemId}`);

@@ -54,3 +54,17 @@ export const deleteUser = async (req, res) => {
     // TODO: delete lists and items
     res.json({ message: 'User deleted' });
 }
+
+/**
+ * Get lists for the given user
+ * @param userId
+ */
+export const getLists = async (req, res) => {
+    const { userId } = req.params;
+    try {
+        const lists = await User.find({ userId: userId });
+        res.status(200).json(lists);
+    } catch (error) {
+        res.status(404).json({ message: error.message });
+    }
+}

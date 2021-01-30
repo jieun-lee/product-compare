@@ -4,9 +4,9 @@ import * as api from '../../api';
  * Gets lists for the given user
  * @param {string} userId
  */
-export const getLists = (userId) => async (dispatch) => {
+export const fetchLists = (userId) => async (dispatch) => {
     try {
-        const { data } = await api.getLists(userId);
+        const { data } = await api.fetchLists(userId);
         dispatch({ type: 'GET_LISTS', payload: data });
     } catch (error) {
         console.log(error);
@@ -30,9 +30,9 @@ export const createList = (list) => async (dispatch) => {
  * Gets list with the given listId
  * @param {string} listId
  */
-export const getList = (listId) => async (dispatch) => {
+export const fetchList = (listId) => async (dispatch) => {
     try {
-        const { data } = await api.getList(listId);
+        const { data } = await api.fetchList(listId);
         dispatch({ type: 'GET_LIST', payload: data });
     } catch (error) {
         console.log(error);

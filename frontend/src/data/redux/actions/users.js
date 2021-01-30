@@ -17,9 +17,9 @@ export const createUser = (user) => async (dispatch) => {
  * Gets user with the given username
  * @param {string} username
  */
-export const getUser = (username) => async (dispatch) => {
+export const fetchUser = (username) => async (dispatch) => {
     try {
-        const { data } = await api.getUser(username);
+        const { data } = await api.fetchUser(username);
         dispatch({ type: 'GET_USER', payload: data });
     } catch (error) {
         console.log(error);

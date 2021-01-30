@@ -1,9 +1,11 @@
-import { useSelector } from 'react-redux';
+/**
+ * Gets all items in the store (should be list-specific)
+ */
+export const getItems = (state) => state.items;
 
-export const getItems = () => useSelector(
-    (state) => state.items
-);
-
-export const getItemById = (itemId) => useSelector(
-    (state) => state.items.filter((item) => item._id === itemId)[0] ?? undefined
-);
+/**
+ * Gets an item from the itemId
+ * @param {*} state 
+ * @param {*} itemId 
+ */
+export const getItemById = (state, itemId) => state.items[itemId];

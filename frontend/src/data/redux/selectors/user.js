@@ -1,5 +1,4 @@
-import { useSelector } from 'react-redux';
-
-export const getUser = () => useSelector(
-    (state) => state.user
-);
+/**
+ * Gets the user in the store
+ */
+export const getUser = (state) => state.user._id ? state.user : undefined;

@@ -4,9 +4,9 @@ import * as api from '../../api';
  * Gets items for the given list
  * @param {string} listId
  */
-export const getItems = (listId) => async (dispatch) => {
+export const fetchItems = (listId) => async (dispatch) => {
     try {
-        const { data } = await api.getItems(listId);
+        const { data } = await api.fetchItems(listId);
         dispatch({ type: 'GET_ITEMS', payload: data });
     } catch (error) {
         console.log(error);
@@ -30,9 +30,9 @@ export const createItem = (item) => async (dispatch) => {
  * Gets item with the given itemId
  * @param {string} itemId
  */
-export const getItem = (itemId) => async (dispatch) => {
+export const fetchItem = (itemId) => async (dispatch) => {
     try {
-        const { data } = await api.getItem(itemId);
+        const { data } = await api.fetchItem(itemId);
         dispatch({ type: 'GET_ITEM', payload: data });
     } catch (error) {
         console.log(error);

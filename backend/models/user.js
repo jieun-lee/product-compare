@@ -9,7 +9,6 @@ const userSchema = mongoose.Schema({
         type: String,
         required: true
     },
-    lists: [ObjectId],
     meta: {}
 });
 

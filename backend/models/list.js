@@ -1,12 +1,15 @@
 import mongoose from 'mongoose';
 
 const listSchema = mongoose.Schema({
+    user: {
+        type: mongoose.Types.ObjectId,
+        required: true
+    },
     name: {
         type: String,
         required: true
     },
     imageUrl: String,
-    items: [ObjectId]
 });
 
 const List = mongoose.model('List', listSchema);

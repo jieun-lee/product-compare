@@ -1,6 +1,19 @@
-import { Mongoose } from 'mongoose';
-import List from '../models/list';
-import Item from '../models/item';
+import mongoose from 'mongoose';
+import List from '../models/list.js';
+
+/**
+ * Creates a list with the given object
+ * @body
+ */
+export const createList = async (req, res) => {
+    const list = new List(req.body);
+    try {
+        await list.save();
+        res.status(201).json(list);
+    } catch (error) {
+        res.status(409).json({ message: error.message });
+    }
+}
 
 /**
  * Gets list with the given listId
@@ -8,7 +21,7 @@ import Item from '../models/item';
  */
 export const getList = async (req, res) => {
     const { listId } = req.params;
-    if (!Mongoose.Types.ObjectId.isValid(listId)) return res.status(404).send('Invalid list id');
+    if (!mongoose.Types.ObjectId.isValid(listId)) return res.status(404).send('Invalid list id');
     try {
         const list = await List.findById(listId);
         res.status(200).json(list);
@@ -25,7 +38,7 @@ export const getList = async (req, res) => {
 export const updateList = async (req, res) => {
     const { listId } = req.params;
     const list = req.body;
-    if (!Mongoose.Types.ObjectId.isValid(listId)) return res.status(404).send('Invalid list id');
+    if (!mongoose.Types.ObjectId.isValid(listId)) return res.status(404).send('Invalid list id');
     const updatedList = await User.findByIdAndUpdate(listId, list, { new: true });
     res.json(updatedList);
 }
@@ -36,26 +49,8 @@ export const updateList = async (req, res) => {
  */
 export const deleteList = async (req, res) => {
     const { listId } = req.params;
-    if (!Mongoose.Types.ObjectId.isValid(listId)) return res.status(404).send('Invalid list id');
+    if (!mongoose.Types.ObjectId.isValid(listId)) return res.status(404).send('Invalid list id');
     await List.findByIdAndRemove(listId);
+    // TODO: delete items
     res.json({ message: 'List deleted' });
-}
-
-/**
- * Creates an item with the given object for the given list
- * @param listId
- * @body
- */
-export const createItem = async (req, res) => {
-    const { listId } = req.params;
-    if (!Mongoose.Types.ObjectId.isValid(listId)) return res.status(404).send('Invalid list id');
-    const item = new Item(req.body);
-    const itemId = item._id;
-    try {
-        await item.save();
-        await List.findByIdAndUpdate(listId, { $push: { items: itemId} });
-        res.status(201).json(item);
-    } catch (error) {
-        res.status(409).json({ message: error.message });
-    }
 }

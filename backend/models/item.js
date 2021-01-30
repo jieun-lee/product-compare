@@ -1,6 +1,10 @@
 import mongoose from 'mongoose';
 
 const itemSchema = mongoose.Schema({
+    list: {
+        type: mongoose.Types.ObjectId,
+        required: true
+    },
     name: {
         type: String,
         required: true

@@ -1,6 +1,20 @@
-import User from '../models/user';
-import List from '../models/list';
-import { Mongoose } from 'mongoose';
+import User from '../models/user.js';
+import mongoose from 'mongoose';
+
+/**
+ * Creates a user with the given object
+ * @body
+ */
+export const createUser = async (req, res) => {
+    const user = new User(req.body);
+    try {
+        // TODO: add check if the username already exists
+        await user.save();
+        res.status(201).json(user);
+    } catch (error) {
+        res.status(409).json({ message: error.message });
+    }
+}
 
 /**
  * Gets user with given username
@@ -17,20 +31,6 @@ export const getUser = async (req, res) => {
 }
 
 /**
- * Creates a user with the given object
- * @body
- */
-export const createUser = async (req, res) => {
-    const user = new User(req.body);
-    try {
-        await user.save();
-        res.status(201).json(user);
-    } catch (error) {
-        res.status(409).json({ message: error.message });
-    }
-}
-
-/**
  * Updates user with the given userId
  * @param userId
  * @body
@@ -38,7 +38,7 @@ export const createUser = async (req, res) => {
 export const updateUser = async (req, res) => {
     const { userId } = req.params;
     const user = req.body;
-    if (!Mongoose.Types.ObjectId.isValid(userId)) return res.status(404).send('Invalid user id');
+    if (!mongoose.Types.ObjectId.isValid(userId)) return res.status(404).send('Invalid user id');
     const updatedUser = await User.findByIdAndUpdate(userId, user, { new: true });
     res.json(updatedUser);
 }
@@ -49,26 +49,8 @@ export const updateUser = async (req, res) => {
  */
 export const deleteUser = async (req, res) => {
     const { userId } = req.params;
-    if (!Mongoose.Types.ObjectId.isValid(userId)) return res.status(404).send('Invalid user id');
+    if (!mongoose.Types.ObjectId.isValid(userId)) return res.status(404).send('Invalid user id');
     await User.findByIdAndRemove(userId);
+    // TODO: delete lists and items
     res.json({ message: 'User deleted' });
-}
-
-/**
- * Creates a list with the given object for the given user
- * @param userId
- * @body
- */
-export const createList = async (req, res) => {
-    const { userId } = req.params;
-    if (!Mongoose.Types.ObjectId.isValid(userId)) return res.status(404).send('Invalid user id');
-    const list = new List(req.body);
-    const listId = list._id;
-    try {
-        await list.save();
-        await User.findByIdAndUpdate(userId, { $push: { lists: listId } });
-        res.status(201).json(list);
-    } catch (error) {
-        res.status(409).json({ message: error.message });
-    }
 }

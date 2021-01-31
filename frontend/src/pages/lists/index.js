@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Redirect } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUser } from '../../data/redux/selectors/user';
 import { getLists } from '../../data/redux/selectors/lists';
@@ -36,45 +36,41 @@ export const ListsPage = () => {
         }
     }, [listData, user]);
 
-    if (!user) {
-        return <div>Log in to view your lists</div>
-    } else {
-        return (
-            <div>
-                <h2>Lists Page</h2>
-                <Modal
-                    size="tiny"
-                    onClose={() => setIsModalOpen(false)}
-                    onOpen={() => setIsModalOpen(true)}
-                    open={isModalOpen}
-                    trigger={<Button>Add New List</Button>}
-                    style={{ padding: '24px' }}
-                >
-                    <h3>Create New List</h3>
-                    <Form onSubmit={handleSubmit}>
-                        <Form.Input
-                            placeholder="List Name"
-                            value={listData.name}
-                            onChange={(e) => updateListData({ 'name': e.target.value })}
-                        />
-                        <Form.Input
-                            placeholder="Description"
-                            value={listData.description}
-                            onChange={(e) => updateListData({ 'description': e.target.value })}
-                        />
-                        <Form.Checkbox
-                            label="Favourite List"
-                            checked={listData.isFavourite}
-                            onChange={() => toggleFavourite()}
-                        />
-                        <Form.Button content="Create" primary />
-                    </Form>
-                </Modal>
-                <CardSection
-                    data={lists}
-                    onItemClick={(id) => history.push(`/list/${id}`)}
-                />
-            </div>
-        );
-    }
+    return (!user) ? <Redirect to="/login" /> : (
+        <div style={{ padding: '12px' }}>
+            <h2 style={{ margin: '12px' }}>My Lists</h2>
+            <Modal
+                size="tiny"
+                onClose={() => setIsModalOpen(false)}
+                onOpen={() => setIsModalOpen(true)}
+                open={isModalOpen}
+                trigger={<Button style={{ marginLeft: '12px', marginBottom: '24px' }}>Add New List</Button>}
+                style={{ padding: '24px' }}
+            >
+                <h3>Create New List</h3>
+                <Form onSubmit={handleSubmit}>
+                    <Form.Input
+                        placeholder="List Name"
+                        value={listData.name}
+                        onChange={(e) => updateListData({ 'name': e.target.value })}
+                    />
+                    <Form.Input
+                        placeholder="Description"
+                        value={listData.description}
+                        onChange={(e) => updateListData({ 'description': e.target.value })}
+                    />
+                    <Form.Checkbox
+                        label="Favourite List"
+                        checked={listData.isFavourite}
+                        onChange={() => toggleFavourite()}
+                    />
+                    <Form.Button content="Create" primary />
+                </Form>
+            </Modal>
+            <CardSection
+                data={lists}
+                onItemClick={(id) => history.push(`/list/${id}`)}
+            />
+        </div>
+    );
 }

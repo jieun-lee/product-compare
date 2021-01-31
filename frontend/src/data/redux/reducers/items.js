@@ -7,7 +7,7 @@ export default (state = {}, action) => {
         case 'UPDATE_ITEM':
             return {...state, ...action.payload};
         case 'DELETE_ITEM':
-            return {...state,[action.payload]: undefined};
+            return {...state, [action.payload]: undefined};
         default:
             return state;
     }

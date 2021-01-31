@@ -47,8 +47,15 @@ export const updateUser = (userId, user) => async (dispatch) => {
 export const deleteUser = (userId) => async (dispatch) => {
     try {
         await api.deleteUser(userId);
-        dispatch({ type: 'DELETE_USER', payload: userId });
+        dispatch({ type: 'DELETE_USER' });
     } catch (error) {
         console.log(error);
     }
+}
+
+/**
+ * Logs out the user by resetting the user in the store
+ */
+export const logoutUser = (dispatch) => {
+    dispatch({ type: 'LOGOUT_USER' });
 }

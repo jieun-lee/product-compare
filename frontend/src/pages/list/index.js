@@ -1,7 +1,7 @@
 import React, { useEffect, useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
-import { Form, Modal, Button } from 'semantic-ui-react';
+import { useParams, useHistory, Redirect } from 'react-router-dom';
+import { Form, Modal, Button, Icon } from 'semantic-ui-react';
 import { fetchItems, createItem } from '../../data/redux/actions/items';
 import { getUser } from '../../data/redux/selectors/user';
 import { getItems } from '../../data/redux/selectors/items';
@@ -20,6 +20,7 @@ const ratingOptions = [
 export const ListPage = () => {
     const { listId } = useParams();
     const dispatch = useDispatch();
+    const history = useHistory();
     const user = useSelector(getUser);
     const list = useSelector((state) => getListById(state, listId));
     const items = useSelector(getItems);
@@ -48,50 +49,55 @@ export const ListPage = () => {
         setIsModalOpen(false);
     }, [itemData]);
 
-    if (!user) {
-        return <div>Log in to view your list</div>
-    } else if (!list) {
-        return <div>List unknown</div>
-    } else {
-        return (
-            <div>
-                <h2>{ list.name }</h2>
-                <Modal
-                    size="tiny"
-                    onClose={() => setIsModalOpen(false)}
-                    onOpen={() => setIsModalOpen(true)}
-                    open={isModalOpen}
-                    trigger={<Button>Add New Item</Button>}
-                    style={{ padding: '24px' }}
-                >
-                    <h3>Create New Item</h3>
-                    <Form onSubmit={handleSubmit}>
-                        <Form.Input
-                            placeholder="Item Name"
-                            value={itemData.name}
-                            onChange={(e) => updateItemData({ 'name': e.target.value })}
-                        />
-                        <Form.Input
-                            placeholder="Description"
-                            value={itemData.description}
-                            onChange={(e) => updateItemData({ 'description': e.target.value })}
-                        />
-                        <Form.Checkbox
-                            label="Favourite Item"
-                            checked={itemData.isFavourite}
-                            onChange={() => toggleFavourite()}
-                        />
-                        <Form.Select
-                            label="Rating"
-                            options={ratingOptions}
-                            value={itemData.rating}
-                            onChange={(_, { value }) => updateItemData({ 'rating': value })}
-                        />
-                        <Form.Button content="Create" primary />
-                    </Form>
-                </Modal>
-                <CardSection data={items} />
-            </div>
-        )
-    }
+    const onBackClicked = useCallback(() => {
+        history.push('/lists');
+    }, []);
+
+    return (!user) ? <Redirect to="/login" /> : (!list) ? <Redirect to="/lists" /> : (
+        <div style={{ padding: '12px' }}>
+            <h2 style={{ margin: '12px' }}>
+                <Icon
+                    name='arrow alternate circle left outline'
+                    onClick={onBackClicked}
+                    style={{ cursor: 'pointer' }}
+                />
+                {list.name}
+            </h2>
+            <Modal
+                size="tiny"
+                onClose={() => setIsModalOpen(false)}
+                onOpen={() => setIsModalOpen(true)}
+                open={isModalOpen}
+                trigger={<Button style={{ marginLeft: '12px', marginBottom: '24px' }}>Add New Item</Button>}
+                style={{ padding: '24px' }}
+            >
+                <h3>Create New Item</h3>
+                <Form onSubmit={handleSubmit}>
+                    <Form.Input
+                        placeholder="Item Name"
+                        value={itemData.name}
+                        onChange={(e) => updateItemData({ 'name': e.target.value })}
+                    />
+                    <Form.Input
+                        placeholder="Description"
+                        value={itemData.description}
+                        onChange={(e) => updateItemData({ 'description': e.target.value })}
+                    />
+                    <Form.Checkbox
+                        label="Favourite Item"
+                        checked={itemData.isFavourite}
+                        onChange={() => toggleFavourite()}
+                    />
+                    <Form.Select
+                        label="Rating"
+                        options={ratingOptions}
+                        value={itemData.rating}
+                        onChange={(_, { value }) => updateItemData({ 'rating': value })}
+                    />
+                    <Form.Button content="Create" primary />
+                </Form>
+            </Modal>
+            <CardSection data={items} />
+        </div>
+    );
 }

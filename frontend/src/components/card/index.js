@@ -27,7 +27,7 @@ const Card = (props) => {
     return (
         <StyledCard onClick={handleClick}>
             <Image src={imageUrl ?? DEFAULT_IMAGE} size='large' />
-            <h3 style={{ marginBottom: '4px' }}>
+            <h3 style={{ marginBottom: '4px', marginTop: '14px' }}>
                 {name}
                 <Rating
                     icon="heart"

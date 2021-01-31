@@ -1,10 +1,14 @@
 import React, { useState, useCallback } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory, Redirect } from 'react-router';
 import { Form } from 'semantic-ui-react';
 import { createUser, fetchUser } from '../../data/redux/actions/users';
+import { getUser } from '../../data/redux/selectors/user';
 
 export const LoginPage = () => {
+    const history = useHistory();
     const dispatch = useDispatch();
+    const user = useSelector(getUser);
     const [username, setUsername] = useState('');
     const [pin, setPin] = useState('');
     const [isNewUser, setIsNewUser] = useState(false);
@@ -19,10 +23,11 @@ export const LoginPage = () => {
             // TODO: pass in username + pin and do validation
             dispatch(fetchUser(username));
         }
+        history.push('/lists');
     }, [isNewUser, username, pin, dispatch]);
 
-    return (
-        <div>
+    return (user) ? <Redirect to="/lists" /> : (
+        <div style={{ padding: '24px' }}>
             <h3>Login</h3>
             <Form onSubmit={handleSubmit} style={{ width: '300px' }}>
                 <Form.Input

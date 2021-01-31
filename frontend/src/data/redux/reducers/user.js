@@ -7,7 +7,8 @@ export default (state = {}, action) => {
         case 'UPDATE_USER':
             return action.payload;
         case 'DELETE_USER':
-            return undefined;
+        case 'LOGOUT_USER':
+            return {};
         default:
             return state;
     }

@@ -22,27 +22,30 @@ export const LoginPage = () => {
     }, [isNewUser, username, pin, dispatch]);
 
     return (
-        <Form onSubmit={handleSubmit} style={{ width: '300px' }}>
-            <Form.Input
-                placeholder="Username"
-                name="username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-            />
-            <Form.Input
-                placeholder="Pin Code"
-                name="pincode"
-                type="password"
-                value={pin}
-                onChange={(e) => setPin(e.target.value)}
-            />
-            <Form.Checkbox
-                name="newUser"
-                label="I am a new user"
-                checked={isNewUser}
-                onChange={() => setIsNewUser((state) => !state)}
-            />
-            <Form.Button content="Login" primary />
-        </Form>
+        <div>
+            <h3>Login</h3>
+            <Form onSubmit={handleSubmit} style={{ width: '300px' }}>
+                <Form.Input
+                    placeholder="Username"
+                    name="username"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                />
+                <Form.Input
+                    placeholder="Pin Code"
+                    name="pincode"
+                    type="password"
+                    value={pin}
+                    onChange={(e) => setPin(e.target.value)}
+                />
+                <Form.Checkbox
+                    name="newUser"
+                    label="I am a new user"
+                    checked={isNewUser}
+                    onChange={() => setIsNewUser((state) => !state)}
+                />
+                <Form.Button content="Login" primary />
+            </Form>
+        </div>
     );
 }

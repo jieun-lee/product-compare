@@ -24,6 +24,7 @@ export const createUser = async (req, res) => {
  */
 export const getUser = async (req, res) => {
     const { username } = req.params;
+    // TODO: need to authenticate with pin
     try {
         const user = await User.findOne({ username: username });
         res.status(200).json(user);

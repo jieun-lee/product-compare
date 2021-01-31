@@ -10,6 +10,7 @@ import { arrayToObject } from '../utils/index.js';
 export const createList = async (req, res) => {
     const list = new List(req.body);
     const listId = list._id;
+    // TODO: check if list.userId is valid
     try {
         await list.save();
         res.status(201).json({ [listId]: list });

@@ -8,6 +8,7 @@ import Item from '../models/item.js';
 export const createItem = async (req, res) => {
     const item = new Item(req.body);
     const itemId = item._id;
+    // TODO: check if item.listId is valid
     try {
         await item.save();
         res.status(201).json({ [itemId]: item });

@@ -10,6 +10,11 @@ const listSchema = mongoose.Schema({
         required: true
     },
     imageUrl: String,
+    description: String,
+    isFavourite: {
+        type: Boolean,
+        default: false
+    }
 });
 
 const List = mongoose.model('List', listSchema);

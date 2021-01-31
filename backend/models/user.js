@@ -5,8 +5,8 @@ const userSchema = mongoose.Schema({
         type: String,
         required: true
     },
-    displayName: {
-        type: String,
+    pin: {
+        type: Number,
         required: true
     },
     meta: {}

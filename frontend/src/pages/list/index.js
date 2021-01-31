@@ -5,6 +5,8 @@ import { Form } from 'semantic-ui-react';
 import { fetchItems, createItem } from '../../data/redux/actions/items';
 import { getUser } from '../../data/redux/selectors/user';
 import { getItems } from '../../data/redux/selectors/items';
+import CardSection from '../../components/cardSection';
+import { getListById } from '../../data/redux/selectors/lists';
 
 const ratingOptions = [
     { key: '0', text: '0', value: 0 },
@@ -19,6 +21,7 @@ export const ListPage = () => {
     const { listId } = useParams();
     const dispatch = useDispatch();
     const user = useSelector(getUser);
+    const list = useSelector((state) => getListById(state, listId));
     const items = useSelector(getItems);
     const [itemData, setItemData] = useState({
         name: '',
@@ -45,15 +48,13 @@ export const ListPage = () => {
 
     if (!user) {
         return <div>Log in to view your list</div>
+    } else if (!list) {
+        return <div>List unknown</div>
     } else {
         return (
             <div>
-                <div>List Page for list {listId}</div>
-                {Object.keys(items).map((id) => (
-                    <div key={id}>
-                        <h3>{items[id].name}</h3>
-                    </div>
-                ))}
+                <h2>{ list.name }</h2>
+                <CardSection data={items} />
                 <Form onSubmit={handleSubmit} style={{ width: '300px', marginTop: '24px' }}>
                     <Form.Input
                         placeholder="Item Name"

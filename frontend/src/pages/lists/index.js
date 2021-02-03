@@ -69,7 +69,10 @@ export const ListsPage = () => {
             </Modal>
             <CardSection
                 data={lists}
-                onItemClick={(id) => history.push(`/list/${id}`)}
+                dataType="List"
+                onClick={(id) => history.push(`/list/${id}`)}
+                onEdit={(id) => console.log(`editing list with id ${id}`)}
+                onDelete={(id) => console.log(`deleting list with id ${id}`)}
             />
         </div>
     );

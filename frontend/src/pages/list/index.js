@@ -97,7 +97,12 @@ export const ListPage = () => {
                     <Form.Button content="Create" primary />
                 </Form>
             </Modal>
-            <CardSection data={items} />
+            <CardSection
+                data={items}
+                dataType="Item"
+                onEdit={(id) => console.log(`editing item with id ${id}`)}
+                onDelete={(id) => console.log(`deleting item with id ${id}`)}
+            />
         </div>
     );
 }

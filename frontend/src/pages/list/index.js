@@ -2,7 +2,7 @@ import React, { useEffect, useCallback, useState, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useHistory, Redirect } from 'react-router-dom';
 import { Button, Icon } from 'semantic-ui-react';
-import { fetchItems, deleteItem } from '../../data/redux/actions/items';
+import { fetchItems, deleteItem, updateItem } from '../../data/redux/actions/items';
 import { getUser } from '../../data/redux/selectors/user';
 import { getItemById, getItems } from '../../data/redux/selectors/items';
 import CardSection from '../../components/cardSection';
@@ -66,6 +66,8 @@ export const ListPage = () => {
                 dataType="Item"
                 onEdit={(id) => handleEditItem(id)}
                 onDelete={(id) => dispatch(deleteItem(id))}
+                toggleFavourite={(id, isFavourite) => dispatch(updateItem(id, { isFavourite: isFavourite }))}
+                changeRating={(id, rating) => dispatch(updateItem(id, { rating: rating }))}
             />
         </div>
     );

@@ -51,20 +51,34 @@ const Card = (props) => {
         rating,
         onCardClick,
         onEdit,
-        onDelete
+        onDelete,
+        toggleFavourite,
+        changeRating
     } = props;
 
     const handleClick = useCallback(() => {
         if (onCardClick) onCardClick();
     }, [onCardClick]);
 
+    const handleToggleFavourite = (event, rating) => {
+        event.stopPropagation();
+        toggleFavourite(rating ? true : false);
+    }
+
+    const handleChangeRating = (event, rating) => {
+        event.stopPropagation();
+        changeRating(rating);
+    }
+
     return (
         <StyledCard onClick={handleClick}>
+            {/* TODO: get rid of blue outline after clicking */}
             <Rating
                 icon="heart"
                 size="massive"
                 maxRating={1}
                 rating={isFavourite ? 1 : 0}
+                onRate={(event, { rating }) => handleToggleFavourite(event, rating)}
                 style={{ position: 'absolute', zIndex: 1, right: 0, top: 0, margin: '8px 4px' }}
             />
             <Image src={imageUrl ?? DEFAULT_IMAGE} size='large' />
@@ -80,7 +94,7 @@ const Card = (props) => {
                     maxRating={5}
                     rating={rating}
                     clearable
-                    onRate={(_, { rating }) => console.log(rating)}
+                    onRate={(event, { rating }) => handleChangeRating(event, rating)}
                 />
             )}
             <CardMenu

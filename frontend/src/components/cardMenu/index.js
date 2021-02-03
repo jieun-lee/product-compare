@@ -38,6 +38,7 @@ const CardMenu = (props) => {
         // TODO: add confirmation for delete
         <Popup
             size="small"
+            // TODO: make trigger region larger
             trigger={<Icon onClick={(e) => e.stopPropagation()} name="ellipsis horizontal" style={{ float: 'right', margin: 0, marginTop: '2px' }} />}
             on="click"
             position="right center"

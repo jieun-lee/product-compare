@@ -16,7 +16,15 @@ const CardWrapper = styled.div`
  * @param {function} onDelete callback function when we click delete
  */
 const CardSection = (props) => {
-    const { data, dataType = "Item", onClick, onEdit, onDelete } = props;
+    const {
+        data,
+        dataType = "Item",
+        onClick,
+        onEdit,
+        onDelete,
+        toggleFavourite,
+        changeRating
+    } = props;
 
     const handleItemClick = (id) => {
         if (onClick) {
@@ -36,10 +44,18 @@ const CardSection = (props) => {
         } else return undefined;
     }
 
+    const handleToggleFavourite = (id, isFavourite) => {
+        if (toggleFavourite) toggleFavourite(id, isFavourite);
+    }
+
+    const handleChangeRating = (id, rating) => {
+        if (changeRating) changeRating(id, rating);
+    }
+
     return (
         <CardWrapper>
             {Object.keys(data).map((id) => {
-                if (!!data[id]) return (
+                return (!!data[id]) ? (
                     <Card
                         key={id}
                         itemType={dataType}
@@ -50,8 +66,10 @@ const CardSection = (props) => {
                         onCardClick={handleItemClick(id)}
                         onEdit={handleItemEdit(id)}
                         onDelete={handleItemDelete(id)}
+                        toggleFavourite={(isFavourite) => handleToggleFavourite(id, isFavourite)}
+                        changeRating={(rating) => handleChangeRating(id, rating)}
                     />
-                )
+                ) : null;
             })}
         </CardWrapper>
     );

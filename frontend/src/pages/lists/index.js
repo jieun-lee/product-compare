@@ -3,7 +3,7 @@ import { useHistory, Redirect } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUser } from '../../data/redux/selectors/user';
 import { getListById, getLists } from '../../data/redux/selectors/lists';
-import { fetchLists, deleteList } from '../../data/redux/actions/lists';
+import { fetchLists, deleteList, updateList } from '../../data/redux/actions/lists';
 import { Button } from 'semantic-ui-react';
 import CardSection from '../../components/cardSection';
 import ListFormModal from '../../components/modal/listForm';
@@ -53,6 +53,7 @@ export const ListsPage = () => {
                 onClick={(id) => history.push(`/list/${id}`)}
                 onEdit={(id) => handleEditList(id)}
                 onDelete={(id) => dispatch(deleteList(id))}
+                toggleFavourite={(id, isFavourite) => dispatch(updateList(id, { isFavourite: isFavourite }))}
             />
         </div>
     );

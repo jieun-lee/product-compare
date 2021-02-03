@@ -48,7 +48,7 @@ const Card = (props) => {
         imageUrl,
         description,
         isFavourite = false,
-        rating = 0,
+        rating,
         onCardClick,
         onEdit,
         onDelete

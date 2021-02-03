@@ -19,8 +19,14 @@ const ratingOptions = [
     { key: '5', text: '5', value: 5 },
 ];
 
+/**
+ * Modal for Creating / Editing Items
+ * @param {boolean} isNew
+ * @param {string} listId
+ * @param {string} title
+ */
 const EditItemModal = (props) => {
-    const { listId, title } = props;
+    const { isNew, listId, title } = props;
     const dispatch = useDispatch();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [itemData, setItemData] = useState(blankItemData);

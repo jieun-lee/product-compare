@@ -73,6 +73,7 @@ const Card = (props) => {
                 {price && <span style={{ color: '#609638' }}>${price}</span>}
             </CardHeader>
             <p>{description}</p>
+            {/* TODO: put stars and ellipsis at the bottom of the card */}
             {rating !== undefined && (
                 <Rating
                     icon="star"

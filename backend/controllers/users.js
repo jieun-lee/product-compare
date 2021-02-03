@@ -54,7 +54,7 @@ export const deleteUser = async (req, res) => {
     const { userId } = req.params;
     if (!mongoose.Types.ObjectId.isValid(userId)) return res.status(404).send('Invalid user id');
     await User.findByIdAndRemove(userId);
-    // TODO: delete lists and items
+    await List.deleteMany({ userId: userId });
     res.json({ message: 'User deleted' });
 }
 

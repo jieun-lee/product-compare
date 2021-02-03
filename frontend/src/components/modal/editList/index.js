@@ -5,8 +5,14 @@ import { createList } from '../../../data/redux/actions/lists';
 
 const blankListData = { name: '', description: '', isFavourite: false };
 
+/**
+ * Modal for Creating / Editing Lists
+ * @param {boolean} isNew
+ * @param {User} user
+ * @param {string} title
+ */
 const EditListModal = (props) => {
-    const { user, title } = props;
+    const { isNew, user, title } = props;
     const dispatch = useDispatch();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [listData, setListData] = useState(blankListData);

@@ -38,19 +38,21 @@ const CardSection = (props) => {
 
     return (
         <CardWrapper>
-            {Object.keys(data).map((id) => (
-                <Card
-                    key={id}
-                    itemType={dataType}
-                    name={data[id].name}
-                    description={data[id].description}
-                    rating={data[id].rating}
-                    isFavourite={data[id].isFavourite}
-                    onCardClick={handleItemClick(id)}
-                    onEdit={handleItemEdit(id)}
-                    onDelete={handleItemDelete(id)}
-                />
-            ))}
+            {Object.keys(data).map((id) => {
+                if (!!data[id]) return (
+                    <Card
+                        key={id}
+                        itemType={dataType}
+                        name={data[id].name}
+                        description={data[id].description}
+                        rating={data[id].rating}
+                        isFavourite={data[id].isFavourite}
+                        onCardClick={handleItemClick(id)}
+                        onEdit={handleItemEdit(id)}
+                        onDelete={handleItemDelete(id)}
+                    />
+                )
+            })}
         </CardWrapper>
     );
 }

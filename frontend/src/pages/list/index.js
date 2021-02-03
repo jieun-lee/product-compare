@@ -2,7 +2,7 @@ import React, { useEffect, useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useHistory, Redirect } from 'react-router-dom';
 import { Button, Icon } from 'semantic-ui-react';
-import { fetchItems } from '../../data/redux/actions/items';
+import { fetchItems, deleteItem } from '../../data/redux/actions/items';
 import { getUser } from '../../data/redux/selectors/user';
 import { getItems } from '../../data/redux/selectors/items';
 import CardSection from '../../components/cardSection';
@@ -36,7 +36,7 @@ export const ListPage = () => {
                 />
                 {list.name}
             </h2>
-            <EditItemModal listId={listId} title="Create New Item">
+            <EditItemModal isNew={true} listId={listId} title="Create New Item">
                 <Button style={{ marginLeft: '12px', marginBottom: '24px' }}>
                     Add New Item
                 </Button>
@@ -45,7 +45,7 @@ export const ListPage = () => {
                 data={items}
                 dataType="Item"
                 onEdit={(id) => console.log(`editing item with id ${id}`)}
-                onDelete={(id) => console.log(`deleting item with id ${id}`)}
+                onDelete={(id) => dispatch(deleteItem(id))}
             />
         </div>
     );

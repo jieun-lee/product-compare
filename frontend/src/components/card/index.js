@@ -64,7 +64,7 @@ const Card = (props) => {
                 icon="heart"
                 size="massive"
                 maxRating={1}
-                defaultRating={isFavourite ? 1 : 0}
+                rating={isFavourite ? 1 : 0}
                 style={{ position: 'absolute', zIndex: 1, right: 0, top: 0, margin: '8px 4px' }}
             />
             <Image src={imageUrl ?? DEFAULT_IMAGE} size='large' />
@@ -78,7 +78,7 @@ const Card = (props) => {
                 <Rating
                     icon="star"
                     maxRating={5}
-                    defaultRating={rating}
+                    rating={rating}
                     clearable
                     onRate={(_, { rating }) => console.log(rating)}
                 />

@@ -1,7 +1,10 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Form, Modal } from 'semantic-ui-react';
-import { createItem } from '../../../data/redux/actions/items';
+import { createItem, updateItem } from '../../../data/redux/actions/items';
+
+const TITLE_NEW_ITEM = "Create New Item";
+const TITLE_EDIT_ITEM = "Edit Item";
 
 const blankItemData = {
     name: '',
@@ -9,6 +12,13 @@ const blankItemData = {
     isFavourite: false,
     rating: 0
 };
+
+const extractItemData = (rawData) => ({
+    name: rawData.name ?? '',
+    description: rawData.description ?? '',
+    isFavourite: rawData.isFavourite ?? false,
+    rating: rawData.rating ?? 0
+});
 
 const ratingOptions = [
     { key: '0', text: '0', value: 0 },
@@ -22,14 +32,20 @@ const ratingOptions = [
 /**
  * Modal for Creating / Editing Items
  * @param {boolean} isNew
- * @param {string} listId
- * @param {string} title
+ * @param {boolean} isModalOpen
+ * @param {function} closeModal
+ * @param {string} listId list the item belongs to / will belong to
+ * @param {string} itemId? the item we are editing
+ * @param {object} savedItem? the item we are loading from
  */
-const EditItemModal = (props) => {
-    const { isNew, listId, title } = props;
+const ItemFormModal = (props) => {
+    const { isNew, isModalOpen, closeModal, listId, itemId, savedItem } = props;
     const dispatch = useDispatch();
-    const [isModalOpen, setIsModalOpen] = useState(false);
     const [itemData, setItemData] = useState(blankItemData);
+
+    useEffect(() => {
+        if (savedItem) setItemData(extractItemData(savedItem));
+    }, [savedItem]);
 
     const updateItemData = useCallback((update) => {
         setItemData((state) => ({ ...state, ...update }));
@@ -40,21 +56,23 @@ const EditItemModal = (props) => {
     }, []);
 
     const handleSubmit = useCallback(() => {
-        dispatch(createItem({ ...itemData, listId: listId }));
+        if (isNew) {
+            dispatch(createItem({ ...itemData, listId: listId }));
+        } else {
+            if (!!itemId) dispatch(updateItem(itemId, itemData));
+        }
         setItemData(blankItemData); // reset form
-        setIsModalOpen(false);
-    }, [dispatch, itemData, listId]);
+        closeModal();
+    }, [dispatch, closeModal, isNew, itemData, listId, itemId]);
 
     return (
         <Modal
             size="tiny"
-            onClose={() => setIsModalOpen(false)}
-            onOpen={() => setIsModalOpen(true)}
             open={isModalOpen}
-            trigger={props.children}
+            onClose={closeModal}
             style={{ padding: '24px' }}
         >
-            <h3>{title}</h3>
+            <h3>{isNew ? TITLE_NEW_ITEM : TITLE_EDIT_ITEM}</h3>
             <Form onSubmit={handleSubmit}>
                 <Form.Input
                     placeholder="Item Name"
@@ -83,4 +101,4 @@ const EditItemModal = (props) => {
     )
 }
 
-export default EditItemModal;
+export default ItemFormModal;

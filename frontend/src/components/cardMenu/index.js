@@ -34,6 +34,8 @@ const CardMenu = (props) => {
     if (!onEdit && !onDelete) return null;
 
     return (
+        // TODO: close popup when we click edit
+        // TODO: add confirmation for delete
         <Popup
             size="small"
             trigger={<Icon onClick={(e) => e.stopPropagation()} name="ellipsis horizontal" style={{ float: 'right', margin: 0, marginTop: '2px' }} />}

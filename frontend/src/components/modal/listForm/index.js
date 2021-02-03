@@ -1,21 +1,37 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Modal, Form } from 'semantic-ui-react';
-import { createList } from '../../../data/redux/actions/lists';
+import { createList, updateList } from '../../../data/redux/actions/lists';
+
+const TITLE_NEW_LIST = "Create a New List";
+const TITLE_EDIT_LIST = "Edit List";
 
 const blankListData = { name: '', description: '', isFavourite: false };
+
+const extractListData = (rawData) => ({
+    name: rawData.name ?? '',
+    description: rawData.description ?? '',
+    isFavourite: rawData.isFavourite ?? false
+});
 
 /**
  * Modal for Creating / Editing Lists
  * @param {boolean} isNew
- * @param {User} user
- * @param {string} title
+ * @param {boolean} isModalOpen
+ * @param {function} closeModal
+ * @param {object} user user the list belongs to / will belong to
+ * @param {string} listId? the list we are editing
+ * @param {object} savedList? the list we are loading from
  */
-const EditListModal = (props) => {
-    const { isNew, user, title } = props;
+const ListFormModal = (props) => {
+    // TODO: pass in userId instead of user
+    const { isNew, isModalOpen, closeModal, user, listId, savedList } = props;
     const dispatch = useDispatch();
-    const [isModalOpen, setIsModalOpen] = useState(false);
     const [listData, setListData] = useState(blankListData);
+
+    useEffect(() => {
+        if (savedList) setListData(extractListData(savedList));
+    }, [savedList]);
 
     const updateListData = useCallback((update) => {
         setListData((state) => ({ ...state, ...update }));
@@ -29,22 +45,24 @@ const EditListModal = (props) => {
         if (!user) {
             alert('Please login and try again');
         } else {
-            dispatch(createList({ ...listData, userId: user._id }));
+            if (isNew) {
+                dispatch(createList({ ...listData, userId: user._id }));
+            } else {
+                if (!!listId) dispatch(updateList(listId, listData));
+            }
             setListData(blankListData); // reset form
-            setIsModalOpen(false);
+            closeModal();
         }
-    }, [dispatch, listData, user]);
+    }, [dispatch, closeModal, isNew, listData, user, listId]);
 
     return (
         <Modal
             size="tiny"
-            onClose={() => setIsModalOpen(false)}
-            onOpen={() => setIsModalOpen(true)}
             open={isModalOpen}
-            trigger={props.children}
+            onClose={closeModal}
             style={{ padding: '24px' }}
         >
-            <h3>{title}</h3>
+            <h3>{isNew ? TITLE_NEW_LIST : TITLE_EDIT_LIST }</h3>
             <Form onSubmit={handleSubmit}>
                 <Form.Input
                     placeholder="List Name"
@@ -67,4 +85,4 @@ const EditListModal = (props) => {
     )
 }
 
-export default EditListModal;
+export default ListFormModal;

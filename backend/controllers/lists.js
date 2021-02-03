@@ -43,7 +43,7 @@ export const updateList = async (req, res) => {
     const { listId } = req.params;
     const list = req.body;
     if (!mongoose.Types.ObjectId.isValid(listId)) return res.status(404).send('Invalid list id');
-    const updatedList = await User.findByIdAndUpdate(listId, list, { new: true });
+    const updatedList = await List.findByIdAndUpdate(listId, list, { new: true });
     res.json({ [listId]: updatedList });
 }
 

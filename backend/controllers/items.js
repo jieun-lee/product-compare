@@ -41,7 +41,7 @@ export const updateItem = async (req, res) => {
     const { itemId } = req.params;
     const item = req.body;
     if (!mongoose.Types.ObjectId.isValid(itemId)) return res.status(404).send('Invalid item id');
-    const updatedItem = await User.findByIdAndUpdate(itemId, item, { new: true });
+    const updatedItem = await Item.findByIdAndUpdate(itemId, item, { new: true });
     res.json({ [itemId]: updatedItem });
 }
 

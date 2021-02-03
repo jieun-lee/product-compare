@@ -34,7 +34,7 @@ export const ListPage = () => {
 
     useEffect(() => {
         dispatch(fetchItems(listId));
-    }, [dispatch]);
+    }, [dispatch, listId]);
 
     const updateItemData = useCallback((update) => {
         setItemData((state) => ({ ...state, ...update }));
@@ -47,11 +47,11 @@ export const ListPage = () => {
     const handleSubmit = useCallback(() => {
         dispatch(createItem({ ...itemData, listId: listId }));
         setIsModalOpen(false);
-    }, [itemData]);
+    }, [dispatch, itemData, listId]);
 
     const onBackClicked = useCallback(() => {
         history.push('/lists');
-    }, []);
+    }, [history]);
 
     return (!user) ? <Redirect to="/login" /> : (!list) ? <Redirect to="/lists" /> : (
         <div style={{ padding: '12px' }}>

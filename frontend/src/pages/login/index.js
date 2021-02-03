@@ -24,7 +24,7 @@ export const LoginPage = () => {
             dispatch(fetchUser(username));
         }
         history.push('/lists');
-    }, [isNewUser, username, pin, dispatch]);
+    }, [isNewUser, username, pin, dispatch, history]);
 
     return (user) ? <Redirect to="/lists" /> : (
         <div style={{ padding: '24px' }}>

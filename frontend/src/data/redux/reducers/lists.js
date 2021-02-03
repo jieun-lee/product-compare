@@ -1,4 +1,4 @@
-export default (state = {}, action) => {
+const reducer = (state = {}, action) => {
     switch (action.type) {
         case 'GET_LISTS':
             return action.payload;
@@ -12,3 +12,5 @@ export default (state = {}, action) => {
             return state;
     }
 }
+
+export default reducer;

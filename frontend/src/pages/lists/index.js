@@ -17,7 +17,7 @@ export const ListsPage = () => {
 
     useEffect(() => {
         if (user?._id) dispatch(fetchLists(user._id));
-    }, [user]);
+    }, [dispatch, user]);
 
     const updateListData = useCallback((update) => {
         setListData((state) => ({ ...state, ...update }));
@@ -34,7 +34,7 @@ export const ListsPage = () => {
             dispatch(createList({ ...listData, userId: user._id }));
             setIsModalOpen(false);
         }
-    }, [listData, user]);
+    }, [dispatch, listData, user]);
 
     return (!user) ? <Redirect to="/login" /> : (
         <div style={{ padding: '12px' }}>

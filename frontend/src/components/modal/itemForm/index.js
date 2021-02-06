@@ -1,18 +1,30 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Form, Modal } from 'semantic-ui-react';
+import styled from 'styled-components';
 import { createItem, updateItem } from '../../../data/redux/actions/items';
 import ImageSelector from '../../imageSelector';
 import ButtonPair from '../../buttonPair';
+import FavouriteDisplay from '../../ratingDisplay/favourite';
+import RatingDisplay from '../../ratingDisplay/rating';
+import FormLabel from '../../text/formLabel';
 
 const TITLE_NEW_ITEM = "Create New Item";
 const TITLE_EDIT_ITEM = "Edit Item";
 const SAVE_BUTTON_NEW_ITEM = "Create";
 const SAVE_BUTTON_EDIT_ITEM ="Save";
 
+const PriceInput = styled(Form.Input)`
+    width: 100px;
+    &&& input {
+        padding: 4px;
+        margin-left: 2px;
+    }
+`;
+
 const blankItemData = {
     name: '',
-    price: undefined,
+    price: '',
     imageUrl: '',
     description: '',
     isFavourite: false,
@@ -21,21 +33,12 @@ const blankItemData = {
 
 const extractItemData = (rawData) => ({
     name: rawData.name ?? '',
-    price: rawData.price ?? undefined,
+    price: isNaN(parseFloat(rawData.price)) ? undefined : parseFloat(rawData.price),
     imageUrl: rawData.imageUrl ?? '',
     description: rawData.description ?? '',
     isFavourite: rawData.isFavourite ?? false,
     rating: rawData.rating ?? 0
 });
-
-const ratingOptions = [
-    { key: '0', text: '0', value: 0 },
-    { key: '1', text: '1', value: 1 },
-    { key: '2', text: '2', value: 2 },
-    { key: '3', text: '3', value: 3 },
-    { key: '4', text: '4', value: 4 },
-    { key: '5', text: '5', value: 5 },
-];
 
 /**
  * Modal for Creating / Editing Items
@@ -59,9 +62,10 @@ const ItemFormModal = (props) => {
         setItemData((state) => ({ ...state, ...update }));
     }, []);
 
-    const toggleFavourite = useCallback(() => {
-        setItemData((state) => ({ ...state, isFavourite: !state.isFavourite }));
-    }, []);
+    const handleModalClose = useCallback(() => {
+        setItemData(blankItemData); // reset form
+        closeModal();
+    }, [closeModal]);
 
     const handleSubmit = useCallback(() => {
         if (isNew) {
@@ -69,40 +73,56 @@ const ItemFormModal = (props) => {
         } else {
             if (!!itemId) dispatch(updateItem(itemId, itemData));
         }
-        setItemData(blankItemData); // reset form
-        closeModal();
-    }, [dispatch, closeModal, isNew, itemData, listId, itemId]);
+        handleModalClose();
+    }, [dispatch, handleModalClose, isNew, itemData, listId, itemId]);
 
     return (
         <Modal
             size="tiny"
             open={isModalOpen}
-            onClose={closeModal}
+            onClose={handleModalClose}
             style={{ padding: '24px' }}
         >
             <h3>{isNew ? TITLE_NEW_ITEM : TITLE_EDIT_ITEM}</h3>
             <Form>
+                <FormLabel required>Name</FormLabel>
                 <Form.Input
                     placeholder="Item Name"
                     value={itemData.name}
                     onChange={(e) => updateItemData({ 'name': e.target.value })}
                 />
+                <FormLabel>Description</FormLabel>
                 <Form.Input
                     placeholder="Description"
                     value={itemData.description}
                     onChange={(e) => updateItemData({ 'description': e.target.value })}
                 />
-                <Form.Checkbox
-                    label="Favourite Item"
-                    checked={itemData.isFavourite}
-                    onChange={() => toggleFavourite()}
-                />
-                <Form.Select
-                    label="Rating"
-                    options={ratingOptions}
-                    value={itemData.rating}
-                    onChange={(_, { value }) => updateItemData({ 'rating': value })}
-                />
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <FormLabel style={{ marginRight: '4px' }}>Price:</FormLabel>
+                    <FormLabel>$</FormLabel>
+                    <PriceInput
+                        placeholder="Price"
+                        value={itemData.price}
+                        onChange={(e) => updateItemData({ 'price': e.target.value })}
+                    />
+                </div>
+                <div style={{ display: 'flex', margin: '8px 0' }}>
+                    <FormLabel>Favourite</FormLabel>
+                    <FavouriteDisplay
+                        isFavourite={itemData.isFavourite}
+                        updateFavourite={(isFavourite) => updateItemData({ 'isFavourite': isFavourite })}
+                        size="huge"
+                        style={{ marginLeft: '4px' }}
+                    />
+                </div>
+                <div style={{ display: 'flex', margin: '8px 0', alignItems: 'center' }}>
+                    <FormLabel>Rating</FormLabel>
+                    <RatingDisplay
+                        rating={itemData.rating}
+                        updateRating={(rating) => updateItemData({ 'rating': rating })}
+                        style={{ marginLeft: '8px' }}
+                    />
+                </div>
                 <ImageSelector
                     currentUrl={itemData.imageUrl}
                     onUpdate={(imageUrl) => updateItemData({ 'imageUrl': imageUrl })}
@@ -110,7 +130,8 @@ const ItemFormModal = (props) => {
                 <ButtonPair
                     saveLabel={isNew ? SAVE_BUTTON_NEW_ITEM : SAVE_BUTTON_EDIT_ITEM}
                     onSave={handleSubmit}
-                    onCancel={closeModal}
+                    onCancel={handleModalClose}
+                    isSaveDisabled={!itemData.name?.length}
                 />
             </Form>
         </Modal>

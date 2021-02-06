@@ -1,8 +1,10 @@
 import React, { useCallback } from 'react';
 import styled from 'styled-components';
 import CardMenu from '../cardMenu';
-import { Rating, Image } from 'semantic-ui-react';
+import { Image } from 'semantic-ui-react';
 import { DEFAULT_IMAGE } from '../../util/const';
+import FavouriteDisplay from '../../components/ratingDisplay/favourite';
+import RatingDisplay from '../ratingDisplay/rating';
 
 const StyledCard = styled.div`
     border: 1px solid #c4c4c4;
@@ -62,26 +64,12 @@ const Card = (props) => {
         if (onCardClick) onCardClick();
     }, [onCardClick]);
 
-    const handleToggleFavourite = (event, rating) => {
-        event.stopPropagation();
-        toggleFavourite(rating ? true : false);
-    }
-
-    const handleChangeRating = (event, rating) => {
-        event.stopPropagation();
-        changeRating(rating);
-    }
-
     return (
         <StyledCard onClick={handleClick}>
             <div style={{ marginBottom: '8px' }}>
-                {/* TODO: get rid of blue outline after clicking */}
-                <Rating
-                    icon="heart"
-                    size="massive"
-                    maxRating={1}
-                    rating={isFavourite ? 1 : 0}
-                    onRate={(event, { rating }) => handleToggleFavourite(event, rating)}
+                <FavouriteDisplay
+                    isFavourite={isFavourite}
+                    updateFavourite={(isFavourite) => toggleFavourite(isFavourite)}
                     style={{ position: 'absolute', zIndex: 1, right: 0, top: 0, margin: '8px 4px' }}
                 />
                 <Image
@@ -97,12 +85,9 @@ const Card = (props) => {
             </div>
             <div>
                 {rating !== undefined && (
-                    <Rating
-                        icon="star"
-                        maxRating={5}
+                    <RatingDisplay
                         rating={rating}
-                        clearable
-                        onRate={(event, { rating }) => handleChangeRating(event, rating)}
+                        updateRating={(rating) => changeRating(rating)}
                     />
                 )}
                 <CardMenu

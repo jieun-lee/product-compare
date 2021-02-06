@@ -7,8 +7,15 @@ const StyledButton = styled(Button)`
     margin: 0 8px !important;
 `;
 
+/**
+ * Cancel and Save Button Pair
+ * @param {string} saveLabel
+ * @param {function} onSave
+ * @param {function} onCancel
+ * @param {boolean} isSaveDisabled?
+ */
 const ButtonPair = (props) => {
-    const { saveLabel, onSave, onCancel } = props;
+    const { saveLabel, onSave, onCancel, isSaveDisabled = false } = props;
     return (
         <div style={{ display: 'flex', justifyContent: 'center', marginTop: '24px' }}>
             <StyledButton
@@ -19,6 +26,7 @@ const ButtonPair = (props) => {
                 content={saveLabel}
                 primary
                 onClick={onSave}
+                disabled={isSaveDisabled}
             />
         </div>
     )

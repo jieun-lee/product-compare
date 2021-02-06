@@ -4,6 +4,8 @@ import { Modal, Form } from 'semantic-ui-react';
 import { createList, updateList } from '../../../data/redux/actions/lists';
 import ButtonPair from '../../buttonPair';
 import ImageSelector from '../../imageSelector';
+import FavouriteDisplay from '../../ratingDisplay/favourite';
+import FormLabel from '../../text/formLabel';
 
 const TITLE_NEW_LIST = "Create a New List";
 const TITLE_EDIT_LIST = "Edit List";
@@ -47,9 +49,10 @@ const ListFormModal = (props) => {
         setListData((state) => ({ ...state, ...update }));
     }, []);
 
-    const toggleFavourite = useCallback(() => {
-        setListData((state) => ({ ...state, isFavourite: !state.isFavourite }));
-    }, []);
+    const handleModalClose = useCallback(() => {
+        setListData(blankListData); // reset form
+        closeModal();
+    }, [closeModal]);
 
     const handleSubmit = useCallback(() => {
         if (!user) {
@@ -60,43 +63,49 @@ const ListFormModal = (props) => {
             } else {
                 if (!!listId) dispatch(updateList(listId, listData));
             }
-            setListData(blankListData); // reset form
-            closeModal();
+            handleModalClose();
         }
-    }, [dispatch, closeModal, isNew, listData, user, listId]);
+    }, [dispatch, handleModalClose, isNew, listData, user, listId]);
 
     return (
         <Modal
             size="tiny"
             open={isModalOpen}
-            onClose={closeModal}
+            onClose={handleModalClose}
             style={{ padding: '24px' }}
         >
             <h3>{isNew ? TITLE_NEW_LIST : TITLE_EDIT_LIST }</h3>
             <Form>
+                <FormLabel required>Name</FormLabel>
                 <Form.Input
                     placeholder="List Name"
                     value={listData.name}
                     onChange={(e) => updateListData({ 'name': e.target.value })}
                 />
+                <FormLabel>Description</FormLabel>
                 <Form.Input
                     placeholder="Description"
                     value={listData.description}
                     onChange={(e) => updateListData({ 'description': e.target.value })}
                 />
-                <Form.Checkbox
-                    label="Favourite List"
-                    checked={listData.isFavourite}
-                    onChange={() => toggleFavourite()}
-                />
+                <div style={{ display: 'flex', margin: '8px 0' }}>
+                    <FormLabel>Favourite</FormLabel>
+                    <FavouriteDisplay
+                        isFavourite={listData.isFavourite}
+                        updateFavourite={(isFavourite) => updateListData({ 'isFavourite': isFavourite })}
+                        size="huge"
+                        style={{ marginLeft: '4px' }}
+                    />
+                </div>
                 <ImageSelector
                     currentUrl={listData.imageUrl}
                     onUpdate={(imageUrl) => updateListData({ 'imageUrl': imageUrl })}
                 />
                 <ButtonPair
                     saveLabel={isNew ? SAVE_BUTTON_NEW_LIST : SAVE_BUTTON_EDIT_LIST}
+                    isSaveDisabled={!listData.name?.length}
                     onSave={handleSubmit}
-                    onCancel={closeModal}
+                    onCancel={handleModalClose}
                 />
             </Form>
         </Modal>

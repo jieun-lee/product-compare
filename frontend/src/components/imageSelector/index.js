@@ -1,9 +1,9 @@
 import React, { useState, useMemo } from 'react';
 import FileBase from 'react-file-base64';
-import { FormField, Input, Image, Button } from 'semantic-ui-react';
-import { DEFAULT_IMAGE } from '../../util/const';
+import { Input, Image, Button } from 'semantic-ui-react';
+import FormLabel from '../text/formLabel';
 
-const URL_MAX_LENGTH = 50;
+const URL_MAX_LENGTH = 200;
 
 /**
  * Image Selector form where you can select a file or give an image url
@@ -23,12 +23,10 @@ const ImageSelector = (props) => {
     return (
         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
             <div style={{ marginRight: '8px', width: '100%', flex: 1 }}>
-                <FormField style={{ margin: 0 }}>
-                    <label>Choose Image</label>
-                </FormField>
+                <FormLabel>Choose Image</FormLabel>
                 <Button.Group size="mini" style={{ marginBottom: '6px' }}>
-                    <Button primary={showFilePicker} onClick={() => setShowFilePicker(true)}>File</Button>
-                    <Button primary={!showFilePicker} onClick={() => setShowFilePicker(false)}>Link</Button>
+                    <Button style={{ padding: '4px 12px' }} primary={showFilePicker} onClick={() => setShowFilePicker(true)}>File</Button>
+                    <Button style={{ padding: '4px 12px' }} primary={!showFilePicker} onClick={() => setShowFilePicker(false)}>Link</Button>
                 </Button.Group>
                 <div>
                     {showFilePicker ? (
@@ -48,14 +46,16 @@ const ImageSelector = (props) => {
                     )}
                 </div>
             </div>
-            <div style={{ flex: '0 0 auto', display: 'flex', alignItems: 'center' }}>
-                <Image
-                    verticalAlign="middle"
-                    src={currentUrl?.length ? currentUrl : DEFAULT_IMAGE}
-                    size='small'
-                    style={{ height: '100px', objectFit: 'scale-down' }}
-                />
-            </div>
+            {!!currentUrl?.length && (
+                <div style={{ flex: '0 0 auto', display: 'flex', alignItems: 'center' }}>
+                    <Image
+                        verticalAlign="middle"
+                        src={currentUrl}
+                        size='small'
+                        style={{ height: '100px', objectFit: 'scale-down' }}
+                    />
+                </div>
+            )}
         </div>
     )
 }

@@ -2,10 +2,13 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Modal, Form } from 'semantic-ui-react';
 import { createList, updateList } from '../../../data/redux/actions/lists';
+import ButtonPair from '../../buttonPair';
 import ImageSelector from '../../imageSelector';
 
 const TITLE_NEW_LIST = "Create a New List";
 const TITLE_EDIT_LIST = "Edit List";
+const SAVE_BUTTON_NEW_LIST = "Create";
+const SAVE_BUTTON_EDIT_LIST ="Save";
 
 const blankListData = {
     name: '',
@@ -90,7 +93,11 @@ const ListFormModal = (props) => {
                     currentUrl={listData.imageUrl}
                     onUpdate={(imageUrl) => updateListData({ 'imageUrl': imageUrl })}
                 />
-                <Form.Button content="Create" primary onClick={handleSubmit} />
+                <ButtonPair
+                    saveLabel={isNew ? SAVE_BUTTON_NEW_LIST : SAVE_BUTTON_EDIT_LIST}
+                    onSave={handleSubmit}
+                    onCancel={closeModal}
+                />
             </Form>
         </Modal>
     )

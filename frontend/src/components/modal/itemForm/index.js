@@ -3,9 +3,12 @@ import { useDispatch } from 'react-redux';
 import { Form, Modal } from 'semantic-ui-react';
 import { createItem, updateItem } from '../../../data/redux/actions/items';
 import ImageSelector from '../../imageSelector';
+import ButtonPair from '../../buttonPair';
 
 const TITLE_NEW_ITEM = "Create New Item";
 const TITLE_EDIT_ITEM = "Edit Item";
+const SAVE_BUTTON_NEW_ITEM = "Create";
+const SAVE_BUTTON_EDIT_ITEM ="Save";
 
 const blankItemData = {
     name: '',
@@ -104,7 +107,11 @@ const ItemFormModal = (props) => {
                     currentUrl={itemData.imageUrl}
                     onUpdate={(imageUrl) => updateItemData({ 'imageUrl': imageUrl })}
                 />
-                <Form.Button content="Create" primary onClick={handleSubmit} />
+                <ButtonPair
+                    saveLabel={isNew ? SAVE_BUTTON_NEW_ITEM : SAVE_BUTTON_EDIT_ITEM}
+                    onSave={handleSubmit}
+                    onCancel={closeModal}
+                />
             </Form>
         </Modal>
     )

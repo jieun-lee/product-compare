@@ -12,6 +12,9 @@ const StyledCard = styled.div`
     padding: 16px;
     box-shadow: 2px 2px 2px 0 #00000040;
     position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 
     &:hover {
         cursor: pointer;
@@ -71,36 +74,43 @@ const Card = (props) => {
 
     return (
         <StyledCard onClick={handleClick}>
-            {/* TODO: get rid of blue outline after clicking */}
-            <Rating
-                icon="heart"
-                size="massive"
-                maxRating={1}
-                rating={isFavourite ? 1 : 0}
-                onRate={(event, { rating }) => handleToggleFavourite(event, rating)}
-                style={{ position: 'absolute', zIndex: 1, right: 0, top: 0, margin: '8px 4px' }}
-            />
-            <Image bordered src={imageUrl?.length ? imageUrl : DEFAULT_IMAGE} size='large' />
-            <CardHeader>
-                <span>{name}</span>
-                {price && <span style={{ color: '#609638' }}>${price}</span>}
-            </CardHeader>
-            <p>{description}</p>
-            {/* TODO: put stars and ellipsis at the bottom of the card */}
-            {rating !== undefined && (
+            <div style={{ marginBottom: '8px' }}>
+                {/* TODO: get rid of blue outline after clicking */}
                 <Rating
-                    icon="star"
-                    maxRating={5}
-                    rating={rating}
-                    clearable
-                    onRate={(event, { rating }) => handleChangeRating(event, rating)}
+                    icon="heart"
+                    size="massive"
+                    maxRating={1}
+                    rating={isFavourite ? 1 : 0}
+                    onRate={(event, { rating }) => handleToggleFavourite(event, rating)}
+                    style={{ position: 'absolute', zIndex: 1, right: 0, top: 0, margin: '8px 4px' }}
                 />
-            )}
-            <CardMenu
-                itemType={itemType}
-                onEdit={onEdit}
-                onDelete={onDelete}
-            />
+                <Image
+                    src={imageUrl?.length ? imageUrl : DEFAULT_IMAGE}
+                    size='large'
+                    style={{ height: '180px', objectFit: 'scale-down' }}
+                />
+                <CardHeader>
+                    <span>{name}</span>
+                    {price && <span style={{ color: '#609638' }}>${price}</span>}
+                </CardHeader>
+                <p>{description}</p>
+            </div>
+            <div>
+                {rating !== undefined && (
+                    <Rating
+                        icon="star"
+                        maxRating={5}
+                        rating={rating}
+                        clearable
+                        onRate={(event, { rating }) => handleChangeRating(event, rating)}
+                    />
+                )}
+                <CardMenu
+                    itemType={itemType}
+                    onEdit={onEdit}
+                    onDelete={onDelete}
+                />
+            </div>
         </StyledCard>
     );
 }

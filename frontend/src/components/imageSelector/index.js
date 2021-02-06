@@ -49,7 +49,12 @@ const ImageSelector = (props) => {
                 </div>
             </div>
             <div style={{ flex: '0 0 auto', display: 'flex', alignItems: 'center' }}>
-                <Image verticalAlign="middle" src={currentUrl?.length ? currentUrl : DEFAULT_IMAGE} size='small' />
+                <Image
+                    verticalAlign="middle"
+                    src={currentUrl?.length ? currentUrl : DEFAULT_IMAGE}
+                    size='small'
+                    style={{ height: '100px', objectFit: 'scale-down' }}
+                />
             </div>
         </div>
     )

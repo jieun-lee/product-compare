@@ -2,8 +2,7 @@ import React, { useCallback } from 'react';
 import styled from 'styled-components';
 import CardMenu from '../cardMenu';
 import { Rating, Image } from 'semantic-ui-react';
-
-const DEFAULT_IMAGE = 'https://react.semantic-ui.com/images/wireframe/image.png';
+import { DEFAULT_IMAGE } from '../../util/const';
 
 const StyledCard = styled.div`
     border: 1px solid #c4c4c4;
@@ -81,7 +80,7 @@ const Card = (props) => {
                 onRate={(event, { rating }) => handleToggleFavourite(event, rating)}
                 style={{ position: 'absolute', zIndex: 1, right: 0, top: 0, margin: '8px 4px' }}
             />
-            <Image src={imageUrl ?? DEFAULT_IMAGE} size='large' />
+            <Image bordered src={imageUrl?.length ? imageUrl : DEFAULT_IMAGE} size='large' />
             <CardHeader>
                 <span>{name}</span>
                 {price && <span style={{ color: '#609638' }}>${price}</span>}

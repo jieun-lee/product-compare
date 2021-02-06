@@ -8,6 +8,8 @@ const reducer = (state = {}, action) => {
             return {...state, ...action.payload};
         case 'DELETE_ITEM':
             return {...state, [action.payload]: undefined};
+        case 'CLEAR_ITEMS':
+            return {};
         default:
             return state;
     }

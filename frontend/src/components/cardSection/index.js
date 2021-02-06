@@ -60,6 +60,8 @@ const CardSection = (props) => {
                         key={id}
                         itemType={dataType}
                         name={data[id].name}
+                        price={data[id].price} // TODO
+                        imageUrl={data[id].imageUrl}
                         description={data[id].description}
                         rating={data[id].rating}
                         isFavourite={data[id].isFavourite}

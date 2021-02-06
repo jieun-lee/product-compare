@@ -65,3 +65,10 @@ export const deleteItem = (itemId) => async (dispatch) => {
         console.log(error);
     }
 }
+
+/**
+ * Clears all items in the redux store
+ */
+export const clearItems = (dispatch) => {
+    dispatch({ type: 'CLEAR_ITEMS' });
+}

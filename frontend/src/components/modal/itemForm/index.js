@@ -2,12 +2,15 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Form, Modal } from 'semantic-ui-react';
 import { createItem, updateItem } from '../../../data/redux/actions/items';
+import ImageSelector from '../../imageSelector';
 
 const TITLE_NEW_ITEM = "Create New Item";
 const TITLE_EDIT_ITEM = "Edit Item";
 
 const blankItemData = {
     name: '',
+    price: undefined,
+    imageUrl: '',
     description: '',
     isFavourite: false,
     rating: 0
@@ -15,6 +18,8 @@ const blankItemData = {
 
 const extractItemData = (rawData) => ({
     name: rawData.name ?? '',
+    price: rawData.price ?? undefined,
+    imageUrl: rawData.imageUrl ?? '',
     description: rawData.description ?? '',
     isFavourite: rawData.isFavourite ?? false,
     rating: rawData.rating ?? 0
@@ -73,7 +78,7 @@ const ItemFormModal = (props) => {
             style={{ padding: '24px' }}
         >
             <h3>{isNew ? TITLE_NEW_ITEM : TITLE_EDIT_ITEM}</h3>
-            <Form onSubmit={handleSubmit}>
+            <Form>
                 <Form.Input
                     placeholder="Item Name"
                     value={itemData.name}
@@ -95,7 +100,11 @@ const ItemFormModal = (props) => {
                     value={itemData.rating}
                     onChange={(_, { value }) => updateItemData({ 'rating': value })}
                 />
-                <Form.Button content="Create" primary />
+                <ImageSelector
+                    currentUrl={itemData.imageUrl}
+                    onUpdate={(imageUrl) => updateItemData({ 'imageUrl': imageUrl })}
+                />
+                <Form.Button content="Create" primary onClick={handleSubmit} />
             </Form>
         </Modal>
     )

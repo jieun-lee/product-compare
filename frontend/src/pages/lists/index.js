@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getUser } from '../../data/redux/selectors/user';
 import { getListById, getLists } from '../../data/redux/selectors/lists';
 import { fetchLists, deleteList, updateList } from '../../data/redux/actions/lists';
+import { clearItems } from '../../data/redux/actions/items';
 import { Button } from 'semantic-ui-react';
 import CardSection from '../../components/cardSection';
 import ListFormModal from '../../components/modal/listForm';
@@ -18,6 +19,10 @@ export const ListsPage = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedListId, setSelectedListId] = useState('');
     const selectedList = useSelector((state) => getListById(state, selectedListId));
+
+    useEffect(() => {
+        dispatch(clearItems);
+    }, [dispatch]);
 
     useEffect(() => {
         if (user?._id) dispatch(fetchLists(user._id));

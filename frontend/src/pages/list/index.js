@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useState, useMemo } from 'react';
+import React, { useEffect, useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useHistory, Redirect } from 'react-router-dom';
 import { Button, Icon } from 'semantic-ui-react';
@@ -18,6 +18,7 @@ export const ListPage = () => {
     const user = useSelector(getUser);
     const list = useSelector((state) => getListById(state, listId));
     const items = useSelector(getItems);
+    const [orderedItemKeys, setOrderedItemKeys] = useState([]);
 
     const [isEditing, setIsEditing] = useState(false); // if the modal for create/edit is open
     const [isViewing, setIsViewing] = useState(false); // if modal for view is open
@@ -28,9 +29,22 @@ export const ListPage = () => {
         dispatch(fetchItems(listId));
     }, [dispatch, listId]);
 
-    const onBackClicked = useCallback(() => {
+    useEffect(() => {
+        // TODO: update items based on this order
+        if (items) setOrderedItemKeys(Object.keys(items));
+    }, [items]);
+
+    const backToLists = useCallback(() => {
         history.push('/lists');
     }, [history]);
+
+    const onNextSelectedItem = useCallback((isNext) => {
+        if (!orderedItemKeys || !selectedItemId) return;
+        const currIndex = orderedItemKeys.findIndex((element) => element === selectedItemId);
+        const numItems = orderedItemKeys.length;
+        const newIndex = isNext ? ((currIndex + 1) % numItems) : ((currIndex - 1 + numItems) % numItems);
+        setSelectedItemId(orderedItemKeys[newIndex]);
+    }, [orderedItemKeys, selectedItemId]);
 
     const handleEditItem = useCallback((id) => {
         setSelectedItemId(id);
@@ -78,6 +92,8 @@ export const ListPage = () => {
                 isModalOpen={isViewing}
                 closeModal={stopViewing}
                 itemDetails={selectedItem}
+                onBackClicked={() => onNextSelectedItem(false)}
+                onNextClicked={() => onNextSelectedItem(true)}
                 toggleFavourite={(isFavourite) => updateItemWithId(selectedItemId, { isFavourite })}
                 changeRating={(rating) => updateItemWithId(selectedItemId, { rating })}
                 updateComments={(comments) => updateItemWithId(selectedItemId, { comments })}
@@ -87,7 +103,7 @@ export const ListPage = () => {
             <h2 style={{ margin: '12px' }}>
                 <Icon
                     name='arrow alternate circle left outline'
-                    onClick={onBackClicked}
+                    onClick={backToLists}
                     style={{ cursor: 'pointer' }}
                 />
                 {list.name}

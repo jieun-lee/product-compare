@@ -46,6 +46,8 @@ const LinkIcon = styled(Icon)`
  * @param {boolean} isModalOpen
  * @param {function} closeModal () => void
  * @param {Item} itemDetails
+ * @param {function} onBackClicked () => void
+ * @param {function} onNextClicked () => void
  * @param {function} toggleFavourite (isFavourite: boolean) => void
  * @param {function} changeRating (rating: number) => void
  * @param {function} updateComments (comments: Comment[]) => void
@@ -57,6 +59,8 @@ const ItemViewModal = (props) => {
         isModalOpen,
         closeModal,
         itemDetails,
+        onBackClicked,
+        onNextClicked,
         toggleFavourite,
         changeRating,
         updateComments,
@@ -135,6 +139,8 @@ const ItemViewModal = (props) => {
             </ItemViewModalContent>
             <ItemViewModalFooter>
                 <ArrowPair
+                    onBackClicked={onBackClicked}
+                    onNextClicked={onNextClicked}
                     style={{ textAlign: 'right' }}
                 />
             </ItemViewModalFooter>

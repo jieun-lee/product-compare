@@ -17,6 +17,8 @@ const StyledIcon = styled(Icon)`
 
 /**
  * Left and Right Arrow Pairs
+ * @param {function} onBackClicked? () => void
+ * @param {function} onNextClicked? () => void
  * @param {style} style
  */
 const ArrowPair = (props) => {

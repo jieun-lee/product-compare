@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import FileBase from 'react-file-base64';
 import { Input, Image, Button } from 'semantic-ui-react';
-import FormLabel from '../text/formLabel';
+import FormLabel from '../../../text/formLabel';
 
 const URL_MAX_LENGTH = 200;
 

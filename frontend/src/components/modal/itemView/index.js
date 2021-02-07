@@ -3,10 +3,10 @@ import { Modal, Image, List, Icon } from 'semantic-ui-react';
 import FavouriteDisplay from '../../ratingDisplay/favourite';
 import RatingDisplay from '../../ratingDisplay/rating';
 import { COLORS, SIZES, PADDING } from '../../../util/const';
-import ArrowPair from '../../arrowPair';
+import ArrowPair from '../components/arrowPair';
 import FormLabel from '../../text/formLabel';
 import ActionPopup from '../../actionPopup';
-import Comments from '../../comments';
+import Comments from '../components/comments';
 import styled from 'styled-components';
 
 const ItemViewModalHeader = styled.div`

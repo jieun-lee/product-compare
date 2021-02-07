@@ -1,10 +1,10 @@
 import React, { useCallback } from 'react';
 import styled from 'styled-components';
-import ActionPopup from '../actionPopup';
+import ActionPopup from '../../../actionPopup';
 import { Image } from 'semantic-ui-react';
-import { DEFAULT_IMAGE, COLORS } from '../../util/const';
-import FavouriteDisplay from '../../components/ratingDisplay/favourite';
-import RatingDisplay from '../ratingDisplay/rating';
+import { DEFAULT_IMAGE, COLORS } from '../../../../util/const';
+import FavouriteDisplay from '../../../ratingDisplay/favourite';
+import RatingDisplay from '../../../ratingDisplay/rating';
 
 const StyledCard = styled.div`
     border: 1px solid #c4c4c4;

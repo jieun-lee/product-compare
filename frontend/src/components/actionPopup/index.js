@@ -62,7 +62,7 @@ const ActionPopup = (props) => {
         >
             <div>
                 {onEdit && (
-                    <ActionIcon name="edit" size="large" onClick={handleEdit} style={{ marginRight: '8px' }} />
+                    <ActionIcon name="edit" size="large" onClick={handleEdit} style={{ marginLeft: '2px', marginRight: '8px' }} />
                 )}
                 {onArchive && (
                     <ActionIcon name="archive" size="large" onClick={handleArchive} style={{ marginRight: '10px' }} />

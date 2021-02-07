@@ -11,6 +11,7 @@ const itemSchema = mongoose.Schema({
     },
     price: Number,
     imageUrl: String,
+    itemUrl: String,
     description: String,
     details: [String],
     comments: [{

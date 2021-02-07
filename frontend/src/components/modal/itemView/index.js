@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal, Image, List } from 'semantic-ui-react';
+import { Modal, Image, List, Icon } from 'semantic-ui-react';
 import FavouriteDisplay from '../../ratingDisplay/favourite';
 import RatingDisplay from '../../ratingDisplay/rating';
 import { COLORS, SIZES, PADDING } from '../../../util/const';
@@ -29,6 +29,18 @@ const ItemViewModalFooter = styled.div`
     bottom: -36px;
 `;
 
+const LinkIcon = styled(Icon)`
+    &&& {
+        margin-right: 0;
+        cursor: pointer;
+        text-decoration: none;
+        color: goldenrod;
+        &:hover {
+            color: darkgoldenrod;
+        }
+    }
+`;
+
 /**
  * Modal for Viewing a List Item
  * @param {boolean} isModalOpen
@@ -55,7 +67,7 @@ const ItemViewModal = (props) => {
     // cannot show the modal without an item selected
     if (!itemDetails) return null;
 
-    const { name, price, imageUrl, description, details = [], isFavourite, rating, comments = [] } = itemDetails;
+    const { name, price, imageUrl, itemUrl, description, details = [], isFavourite, rating, comments = [] } = itemDetails;
 
     return (
         <Modal
@@ -73,7 +85,12 @@ const ItemViewModal = (props) => {
                     />
                     <div style={{ marginLeft: '8px' }}>
                         <h2 style={{ marginBottom: '4px', display: 'flex', alignItems: 'center' }}>
-                            <span style={{ marginRight: '4px' }}>{name}</span>
+                            <span style={{ marginRight: '2px' }}>{name}</span>
+                            {itemUrl && (
+                                <a target="_blank" rel="noreferrer" href={itemUrl} style={{ display: 'flex' }}>
+                                    <LinkIcon name="linkify" size="small" />
+                                </a>  
+                            )}
                             <ActionPopup
                                 direction="vertical"
                                 size="small"

@@ -28,6 +28,7 @@ const blankItemData = {
     name: '',
     price: '',
     imageUrl: '',
+    itemUrl: '',
     description: '',
     details: [],
     isFavourite: false,
@@ -38,6 +39,7 @@ const rawDataToFormData = (rawData) => ({
     name: rawData.name ?? '',
     price: rawData.price?.toString() ?? '',
     imageUrl: rawData.imageUrl ?? '',
+    itemUrl: rawData.itemUrl ?? '',
     description: rawData.description ?? '',
     details: rawData.details ?? [],
     isFavourite: rawData.isFavourite ?? false,
@@ -112,6 +114,12 @@ const ItemFormModal = (props) => {
                     placeholder="Description"
                     value={itemData.description}
                     onChange={(e) => updateItemData({ 'description': e.target.value })}
+                />
+                <FormLabel>Item URL</FormLabel>
+                <Form.Input
+                    placeholder="Item URL"
+                    value={itemData.itemUrl}
+                    onChange={(e) => updateItemData({ 'itemUrl': e.target.value })}
                 />
                 <div style={{ display: 'flex', alignItems: 'center' }}>
                     <FormLabel style={{ marginRight: '4px' }}>Price:</FormLabel>

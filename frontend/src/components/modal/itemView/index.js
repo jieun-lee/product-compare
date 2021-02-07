@@ -5,7 +5,7 @@ import RatingDisplay from '../../ratingDisplay/rating';
 import { COLORS, SIZES, PADDING } from '../../../util/const';
 import ArrowPair from '../../arrowPair';
 import FormLabel from '../../text/formLabel';
-import CardMenu from '../../cardMenu';
+import ActionPopup from '../../actionPopup';
 import Comments from '../../comments';
 import styled from 'styled-components';
 
@@ -25,7 +25,7 @@ const ItemViewModalContent = styled.div`
 const ItemViewModalFooter = styled.div`
     position: absolute;
     width: 100%;
-    margin-left: -24px;
+    margin-left: -12px;
     bottom: -36px;
 `;
 
@@ -74,8 +74,7 @@ const ItemViewModal = (props) => {
                     <div style={{ marginLeft: '8px' }}>
                         <h2 style={{ marginBottom: '4px', display: 'flex', alignItems: 'center' }}>
                             <span style={{ marginRight: '4px' }}>{name}</span>
-                            <CardMenu
-                                itemType="Item"
+                            <ActionPopup
                                 direction="vertical"
                                 size="small"
                                 onEdit={onEdit}

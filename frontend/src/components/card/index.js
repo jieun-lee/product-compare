@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import styled from 'styled-components';
-import CardMenu from '../cardMenu';
+import ActionPopup from '../actionPopup';
 import { Image } from 'semantic-ui-react';
 import { DEFAULT_IMAGE, COLORS } from '../../util/const';
 import FavouriteDisplay from '../../components/ratingDisplay/favourite';
@@ -33,7 +33,6 @@ const CardHeader = styled.h3`
 
 /**
  * Card for displaying a list or ist item
- * @param {string} itemType
  * @param {string} name
  * @param {number} price?
  * @param {string} imageUrl?
@@ -46,7 +45,6 @@ const CardHeader = styled.h3`
  */
 const Card = (props) => {
     const {
-        itemType,
         name,
         price,
         imageUrl,
@@ -90,8 +88,7 @@ const Card = (props) => {
                         updateRating={(rating) => changeRating(rating)}
                     />
                 )}
-                <CardMenu
-                    itemType={itemType}
+                <ActionPopup
                     onEdit={onEdit}
                     onDelete={onDelete}
                 />

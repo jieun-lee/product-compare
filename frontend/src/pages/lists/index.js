@@ -54,7 +54,6 @@ export const ListsPage = () => {
             </Button>
             <CardSection
                 data={lists}
-                dataType="List"
                 onClick={(id) => history.push(`/list/${id}`)}
                 onEdit={(id) => handleEditList(id)}
                 onDelete={(id) => dispatch(deleteList(id))}

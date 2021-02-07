@@ -97,7 +97,6 @@ export const ListPage = () => {
             </Button>
             <CardSection
                 data={items}
-                dataType="Item"
                 onClick={(id) => handleViewItem(id)}
                 onEdit={(id) => handleEditItem(id)}
                 onDelete={handleDeleteItem}

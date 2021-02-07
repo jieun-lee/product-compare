@@ -10,7 +10,6 @@ const CardWrapper = styled.div`
 /**
  * Section for displaying a set of cards
  * @param {object} data object with key-value pairs of items to display
- * @param {string} dataType "List" or "Item" (the label)
  * @param {function} onClick callback function when a single card is clicked
  * @param {function} onEdit callback function when we click edit
  * @param {function} onDelete callback function when we click delete
@@ -18,7 +17,6 @@ const CardWrapper = styled.div`
 const CardSection = (props) => {
     const {
         data,
-        dataType = "Item",
         onClick,
         onEdit,
         onDelete,
@@ -58,7 +56,6 @@ const CardSection = (props) => {
                 return (!!data[id]) ? (
                     <Card
                         key={id}
-                        itemType={dataType}
                         name={data[id].name}
                         price={data[id].price} // TODO
                         imageUrl={data[id].imageUrl}

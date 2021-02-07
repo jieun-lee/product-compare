@@ -1,8 +1,9 @@
 import React from 'react';
-import { Modal, Image } from 'semantic-ui-react';
+import { Modal, Image, Icon } from 'semantic-ui-react';
 import FavouriteDisplay from '../../ratingDisplay/favourite';
 import RatingDisplay from '../../ratingDisplay/rating';
 import { COLORS } from '../../../util/const';
+import ArrowPair from '../../arrowPair';
 
 /**
  * Modal for Viewing a List Item
@@ -32,10 +33,17 @@ const ItemViewModal = (props) => {
                     <FavouriteDisplay
                         isFavourite={isFavourite}
                         updateFavourite={toggleFavourite}
-                        style={{ marginTop: '4px' }}
+                        style={{ marginTop: '4px', marginLeft: '-5px' }}
                     />
                     <div style={{ marginLeft: '8px' }}>
-                        <h2 style={{ marginBottom: '4px' }}>{name}</h2>
+                        <h2 style={{ marginBottom: '4px', display: 'flex', alignItems: 'center' }}>
+                            {name}
+                            <Icon
+                                name="pencil"
+                                size="small"
+                                style={{ marginLeft: '2px', cursor: 'pointer' }}
+                            />
+                        </h2>
                         <RatingDisplay
                             rating={rating}
                             updateRating={changeRating}
@@ -54,6 +62,11 @@ const ItemViewModal = (props) => {
                     />
                 )}
                 <div>{description}</div>
+            </div>
+            <div style={{ position: 'absolute', width: '100%', marginLeft: '-24px', bottom: '-36px' }}>
+                <ArrowPair
+                    style={{ textAlign: 'right' }}
+                />
             </div>
         </Modal>
     )

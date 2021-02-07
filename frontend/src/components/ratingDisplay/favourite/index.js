@@ -1,5 +1,12 @@
 import React from 'react';
 import { Rating } from 'semantic-ui-react';
+import styled from 'styled-components';
+
+const StyledRating = styled(Rating)`
+    &&& i:focus {
+        outline: none;
+    }
+`;
 
 /**
  * Displays the isFavourite boolean with a Heart
@@ -18,7 +25,7 @@ const FavouriteDisplay = (props) => {
 
     // TODO: get rid of blue outline after clicking
     return (
-        <Rating
+        <StyledRating
             icon="heart"
             size={size ?? "massive"}
             maxRating={1}

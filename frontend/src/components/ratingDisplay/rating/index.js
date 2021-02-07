@@ -1,5 +1,12 @@
 import React from 'react';
 import { Rating } from 'semantic-ui-react';
+import styled from 'styled-components';
+
+const StyledRating = styled(Rating)`
+    &&& i:focus {
+        outline: none;
+    }
+`;
 
 /**
  * Displays the rating with stars
@@ -17,7 +24,7 @@ const RatingDisplay = (props) => {
 
     // TODO: get rid of blue outline after clicking
     return (
-        <Rating
+        <StyledRating
             icon="star"
             maxRating={5}
             rating={rating}

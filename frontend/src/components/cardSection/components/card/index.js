@@ -77,7 +77,8 @@ const Card = (props) => {
                 />
                 <CardHeader>
                     <span>{name}</span>
-                    {price && <span style={{ color: COLORS.PRICE }}>${price}</span>}
+                    {/* TODO: handle different currencies / decimal points */}
+                    {price && <span style={{ color: COLORS.PRICE }}>${price.toFixed(2)}</span>}
                 </CardHeader>
                 <p>{description}</p>
             </div>

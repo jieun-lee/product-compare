@@ -109,7 +109,7 @@ const ItemViewModal = (props) => {
                     </div>
                 </div>
                 {!!price && (
-                    <h2 style={{ margin: 0, color: COLORS.PRICE }}>${price}</h2>
+                    <h2 style={{ margin: 0, color: COLORS.PRICE }}>${price.toFixed(2)}</h2>
                 )}
             </ItemViewModalHeader>
             <ItemViewModalContent>

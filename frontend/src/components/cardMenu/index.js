@@ -15,11 +15,13 @@ const MenuItem = styled.div`
 /**
  * Ellipsis menu on cards
  * @param {string} itemType
+ * @param {Direction} direction? direction of icon
+ * @param {Size} size? size of icon
  * @param {function} onEdit?
  * @param {function} onDelete?
  */
 const CardMenu = (props) => {
-    const { itemType, onEdit, onDelete } = props;
+    const { itemType, direction = 'horizontal', size, onEdit, onDelete } = props;
 
     const handleEdit = useCallback((event) => {
         event.stopPropagation();
@@ -39,7 +41,14 @@ const CardMenu = (props) => {
         <Popup
             size="small"
             // TODO: make trigger region larger
-            trigger={<Icon onClick={(e) => e.stopPropagation()} name="ellipsis horizontal" style={{ float: 'right', margin: 0, marginTop: '2px' }} />}
+            trigger={(
+                <Icon
+                    size={size}
+                    onClick={(e) => e.stopPropagation()}
+                    name={`ellipsis ${direction}`}
+                    style={{ float: 'right', margin: 0, marginTop: '2px', cursor: 'pointer' }}
+                />
+            )}
             on="click"
             position="right center"
         >

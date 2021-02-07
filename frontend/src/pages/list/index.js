@@ -34,6 +34,7 @@ export const ListPage = () => {
 
     const handleEditItem = useCallback((id) => {
         setSelectedItemId(id);
+        setIsViewing(false);
         setIsEditing(true);
     }, []);
 
@@ -44,6 +45,7 @@ export const ListPage = () => {
 
     const handleViewItem = useCallback((id) => {
         setSelectedItemId(id);
+        setIsEditing(false);
         setIsViewing(true);
     }, []);
 
@@ -58,6 +60,12 @@ export const ListPage = () => {
 
     const changeItemRating = useCallback((id, rating) => {
         dispatch(updateItem(id, { rating: rating }));
+    }, [dispatch]);
+
+    const handleDeleteItem = useCallback((id) => {
+        setIsViewing(false);
+        setIsEditing(false);
+        dispatch(deleteItem(id));
     }, [dispatch]);
 
     return (!user) ? <Redirect to="/login" /> : (!list) ? <Redirect to="/lists" /> : (
@@ -76,6 +84,8 @@ export const ListPage = () => {
                 itemDetails={selectedItem}
                 toggleFavourite={(isFavourite) => toggleItemFavourite(selectedItemId, isFavourite)}
                 changeRating={(rating) => changeItemRating(selectedItemId, rating)}
+                onEdit={() => handleEditItem(selectedItemId)}
+                onDelete={() => handleDeleteItem(selectedItemId)}
             />
             <h2 style={{ margin: '12px' }}>
                 <Icon
@@ -93,7 +103,7 @@ export const ListPage = () => {
                 dataType="Item"
                 onClick={(id) => handleViewItem(id)}
                 onEdit={(id) => handleEditItem(id)}
-                onDelete={(id) => dispatch(deleteItem(id))}
+                onDelete={handleDeleteItem}
                 toggleFavourite={toggleItemFavourite}
                 changeRating={changeItemRating}
             />

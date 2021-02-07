@@ -5,6 +5,7 @@ import RatingDisplay from '../../ratingDisplay/rating';
 import { COLORS } from '../../../util/const';
 import ArrowPair from '../../arrowPair';
 import FormLabel from '../../text/formLabel';
+import CardMenu from '../../cardMenu';
 
 /**
  * Modal for Viewing a List Item
@@ -13,9 +14,11 @@ import FormLabel from '../../text/formLabel';
  * @param {Item} itemDetails
  * @param {function} toggleFavourite (isFavourite: boolean) => void
  * @param {function} changeRating (rating: number) => void
+ * @param {function} onEdit () => void
+ * @param {function} onDelete () => void
  */
 const ItemViewModal = (props) => {
-    const { isModalOpen, closeModal, itemDetails, toggleFavourite, changeRating } = props;
+    const { isModalOpen, closeModal, itemDetails, toggleFavourite, changeRating, onEdit, onDelete } = props;
 
     // cannot show the modal without an item selected
     if (!itemDetails) return null;
@@ -38,11 +41,13 @@ const ItemViewModal = (props) => {
                     />
                     <div style={{ marginLeft: '8px' }}>
                         <h2 style={{ marginBottom: '4px', display: 'flex', alignItems: 'center' }}>
-                            {name}
-                            <Icon
-                                name="pencil"
+                            <span style={{ marginRight: '4px' }}>{name}</span>
+                            <CardMenu
+                                itemType="Item"
+                                direction="vertical"
                                 size="small"
-                                style={{ marginLeft: '2px', cursor: 'pointer' }}
+                                onEdit={onEdit}
+                                onDelete={onDelete}
                             />
                         </h2>
                         <RatingDisplay

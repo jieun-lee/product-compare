@@ -25,8 +25,22 @@ const ImageSelector = (props) => {
             <div style={{ marginRight: '8px', width: '100%', flex: 1 }}>
                 <FormLabel>Choose Image</FormLabel>
                 <Button.Group size="mini" style={{ marginBottom: '6px' }}>
-                    <Button style={{ padding: '4px 12px' }} primary={showFilePicker} onClick={() => setShowFilePicker(true)}>File</Button>
-                    <Button style={{ padding: '4px 12px' }} primary={!showFilePicker} onClick={() => setShowFilePicker(false)}>Link</Button>
+                    <Button
+                        style={{ padding: '4px 12px' }}
+                        primary={showFilePicker}
+                        onClick={() => setShowFilePicker(true)}
+                        type="button"
+                    >
+                        File
+                    </Button>
+                    <Button
+                        style={{ padding: '4px 12px' }}
+                        primary={!showFilePicker}
+                        onClick={() => setShowFilePicker(false)}
+                        type="button"
+                    >
+                        Link
+                    </Button>
                 </Button.Group>
                 <div>
                     {showFilePicker ? (

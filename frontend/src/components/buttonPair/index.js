@@ -21,12 +21,14 @@ const ButtonPair = (props) => {
             <StyledButton
                 content="Cancel"
                 onClick={onCancel}
+                type="button"
             />
             <StyledButton
                 content={saveLabel}
                 primary
                 onClick={onSave}
                 disabled={isSaveDisabled}
+                type="button"
             />
         </div>
     )

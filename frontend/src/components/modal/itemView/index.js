@@ -1,9 +1,10 @@
 import React from 'react';
-import { Modal, Image, Icon } from 'semantic-ui-react';
+import { Modal, Image, Icon, List } from 'semantic-ui-react';
 import FavouriteDisplay from '../../ratingDisplay/favourite';
 import RatingDisplay from '../../ratingDisplay/rating';
 import { COLORS } from '../../../util/const';
 import ArrowPair from '../../arrowPair';
+import FormLabel from '../../text/formLabel';
 
 /**
  * Modal for Viewing a List Item
@@ -19,7 +20,7 @@ const ItemViewModal = (props) => {
     // cannot show the modal without an item selected
     if (!itemDetails) return null;
 
-    const { name, price, imageUrl, description, isFavourite, rating } = itemDetails;
+    const { name, price, imageUrl, description, details = [], isFavourite, rating } = itemDetails;
 
     return (
         <Modal
@@ -61,7 +62,16 @@ const ItemViewModal = (props) => {
                         style={{ height: '200px', objectFit: 'scale-down', margin: 'auto' }}
                     />
                 )}
-                <div>{description}</div>
+                <FormLabel style={{ fontSize: '16px', marginTop: '8px', marginBottom: '6px' }}>
+                    {description}
+                </FormLabel>
+                <div>
+                    <List bulleted>
+                        {details.map((detail, index) => (
+                            <List.Item key={index}>{detail}</List.Item>
+                        ))}
+                    </List>
+                </div>
             </div>
             <div style={{ position: 'absolute', width: '100%', marginLeft: '-24px', bottom: '-36px' }}>
                 <ArrowPair

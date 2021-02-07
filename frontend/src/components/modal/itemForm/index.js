@@ -8,6 +8,7 @@ import ButtonPair from '../../buttonPair';
 import FavouriteDisplay from '../../ratingDisplay/favourite';
 import RatingDisplay from '../../ratingDisplay/rating';
 import FormLabel from '../../text/formLabel';
+import InputList from '../../inputList';
 
 const TITLE_NEW_ITEM = "Create New Item";
 const TITLE_EDIT_ITEM = "Edit Item";
@@ -27,17 +28,25 @@ const blankItemData = {
     price: '',
     imageUrl: '',
     description: '',
+    details: [],
     isFavourite: false,
     rating: 0
 };
 
-const extractItemData = (rawData) => ({
+const rawDataToFormData = (rawData) => ({
     name: rawData.name ?? '',
-    price: isNaN(parseFloat(rawData.price)) ? undefined : parseFloat(rawData.price),
+    price: rawData.price?.toString() ?? '',
     imageUrl: rawData.imageUrl ?? '',
     description: rawData.description ?? '',
+    details: rawData.details ?? [],
     isFavourite: rawData.isFavourite ?? false,
     rating: rawData.rating ?? 0
+});
+
+const formDataToSavedData = (listId, formData) => ({
+    ...formData,
+    listId: listId,
+    price: isNaN(parseFloat(formData.price)) ? undefined : parseFloat(formData.price)
 });
 
 /**
@@ -55,7 +64,11 @@ const ItemFormModal = (props) => {
     const [itemData, setItemData] = useState(blankItemData);
 
     useEffect(() => {
-        if (savedItem) setItemData(extractItemData(savedItem));
+        if (savedItem) {
+            setItemData(rawDataToFormData(savedItem));
+        } else {
+            setItemData(blankItemData);
+        }
     }, [savedItem]);
 
     const updateItemData = useCallback((update) => {
@@ -69,9 +82,9 @@ const ItemFormModal = (props) => {
 
     const handleSubmit = useCallback(() => {
         if (isNew) {
-            dispatch(createItem({ ...itemData, listId: listId }));
+            dispatch(createItem(formDataToSavedData(listId, itemData)));
         } else {
-            if (!!itemId) dispatch(updateItem(itemId, itemData));
+            if (!!itemId) dispatch(updateItem(itemId, formDataToSavedData(listId, itemData)));
         }
         handleModalClose();
     }, [dispatch, handleModalClose, isNew, itemData, listId, itemId]);
@@ -126,6 +139,13 @@ const ItemFormModal = (props) => {
                 <ImageSelector
                     currentUrl={itemData.imageUrl}
                     onUpdate={(imageUrl) => updateItemData({ 'imageUrl': imageUrl })}
+                />
+                <FormLabel>Details</FormLabel>
+                <InputList
+                    values={itemData.details}
+                    onUpdate={(values) => updateItemData({ 'details': values })}
+                    placeholder="Enter Detail"
+                    buttonLabel="+ Add Detail"
                 />
                 <ButtonPair
                     saveLabel={isNew ? SAVE_BUTTON_NEW_ITEM : SAVE_BUTTON_EDIT_ITEM}

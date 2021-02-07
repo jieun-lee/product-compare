@@ -2,8 +2,10 @@ import React from 'react';
 import styled from 'styled-components';
 
 const Text = styled.p`
-    margin-bottom: 2px !important;
-    font-weight: 600;
+    &&& {
+        margin-bottom: 2px;
+        font-weight: 600;
+    }
 `;
 
 /**

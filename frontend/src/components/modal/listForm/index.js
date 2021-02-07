@@ -19,7 +19,7 @@ const blankListData = {
     isFavourite: false
 };
 
-const extractListData = (rawData) => ({
+const rawDataToFormData = (rawData) => ({
     name: rawData.name ?? '',
     imageUrl: rawData.imageUrl ?? '',
     description: rawData.description ?? '',
@@ -42,7 +42,11 @@ const ListFormModal = (props) => {
     const [listData, setListData] = useState(blankListData);
 
     useEffect(() => {
-        if (savedList) setListData(extractListData(savedList));
+        if (savedList) {
+            setListData(rawDataToFormData(savedList));
+        } else {
+            setListData(blankListData);
+        }
     }, [savedList]);
 
     const updateListData = useCallback((update) => {

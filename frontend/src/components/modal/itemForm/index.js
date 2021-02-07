@@ -9,6 +9,7 @@ import FavouriteDisplay from '../../ratingDisplay/favourite';
 import RatingDisplay from '../../ratingDisplay/rating';
 import FormLabel from '../../text/formLabel';
 import InputList from '../../inputList';
+import { STYLES, PADDING } from '../../../util/const';
 
 const TITLE_NEW_ITEM = "Create New Item";
 const TITLE_EDIT_ITEM = "Edit Item";
@@ -94,11 +95,13 @@ const ItemFormModal = (props) => {
             size="tiny"
             open={isModalOpen}
             onClose={handleModalClose}
-            style={{ padding: '24px' }}
+            style={{ padding: PADDING.MODAL_OUTER_PADDING }}
         >
-            <h3>{isNew ? TITLE_NEW_ITEM : TITLE_EDIT_ITEM}</h3>
-            <Form>
-                <FormLabel required>Name</FormLabel>
+            <h3 style={{ padding: PADDING.MODAL_INNER_PADDING }}>
+                {isNew ? TITLE_NEW_ITEM : TITLE_EDIT_ITEM}
+            </h3>
+            <Form style={STYLES.MODAL_FORM}>
+                <FormLabel required style={{ marginTop: 0 }}>Name</FormLabel>
                 <Form.Input
                     placeholder="Item Name"
                     value={itemData.name}

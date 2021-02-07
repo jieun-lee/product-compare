@@ -22,7 +22,7 @@ const ImageSelector = (props) => {
 
     return (
         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
-            <div style={{ marginRight: '8px', width: '100%', flex: 1 }}>
+            <div style={{ width: '100%', flex: 1 }}>
                 <FormLabel>Choose Image</FormLabel>
                 <Button.Group size="mini" style={{ marginBottom: '6px' }}>
                     <Button
@@ -45,7 +45,6 @@ const ImageSelector = (props) => {
                 <div>
                     {showFilePicker ? (
                         <FileBase
-                            size="small"
                             type="file"
                             multiple={false}
                             onDone={({ base64: imageUrl }) => onUpdate(imageUrl)}
@@ -55,13 +54,13 @@ const ImageSelector = (props) => {
                             placeholder="Image URL"
                             value={parsedUrl}
                             onChange={(e) => onUpdate(e.target.value)}
-                            style={{ width: '100%' }}
+                            style={{ width: '100%', height: '44px' }}
                         />
                     )}
                 </div>
             </div>
             {!!currentUrl?.length && (
-                <div style={{ flex: '0 0 auto', display: 'flex', alignItems: 'center' }}>
+                <div style={{ flex: '0 0 auto', display: 'flex', alignItems: 'center', marginLeft: '8px',  }}>
                     <Image
                         verticalAlign="middle"
                         src={currentUrl}

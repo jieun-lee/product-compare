@@ -6,6 +6,7 @@ import ButtonPair from '../../buttonPair';
 import ImageSelector from '../../imageSelector';
 import FavouriteDisplay from '../../ratingDisplay/favourite';
 import FormLabel from '../../text/formLabel';
+import { STYLES, PADDING } from '../../../util/const';
 
 const TITLE_NEW_LIST = "Create a New List";
 const TITLE_EDIT_LIST = "Edit List";
@@ -76,11 +77,13 @@ const ListFormModal = (props) => {
             size="tiny"
             open={isModalOpen}
             onClose={handleModalClose}
-            style={{ padding: '24px' }}
+            style={{ padding: PADDING.MODAL_OUTER_PADDING }}
         >
-            <h3>{isNew ? TITLE_NEW_LIST : TITLE_EDIT_LIST }</h3>
-            <Form>
-                <FormLabel required>Name</FormLabel>
+            <h3 style={{ padding: PADDING.MODAL_INNER_PADDING }}>
+                {isNew ? TITLE_NEW_LIST : TITLE_EDIT_LIST }
+            </h3>
+            <Form style={STYLES.MODAL_FORM}>
+                <FormLabel required style={{ marginTop: 0 }}>Name</FormLabel>
                 <Form.Input
                     placeholder="List Name"
                     value={listData.name}

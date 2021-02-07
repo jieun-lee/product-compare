@@ -54,12 +54,8 @@ export const ListPage = () => {
         setSelectedItemId('');
     }, []);
 
-    const toggleItemFavourite = useCallback((id, isFavourite) => {
-        dispatch(updateItem(id, { isFavourite: isFavourite }));
-    }, [dispatch]);
-
-    const changeItemRating = useCallback((id, rating) => {
-        dispatch(updateItem(id, { rating: rating }));
+    const updateItemWithId = useCallback((id, update) => {
+        dispatch(updateItem(id, update));
     }, [dispatch]);
 
     const handleDeleteItem = useCallback((id) => {
@@ -82,8 +78,9 @@ export const ListPage = () => {
                 isModalOpen={isViewing}
                 closeModal={stopViewing}
                 itemDetails={selectedItem}
-                toggleFavourite={(isFavourite) => toggleItemFavourite(selectedItemId, isFavourite)}
-                changeRating={(rating) => changeItemRating(selectedItemId, rating)}
+                toggleFavourite={(isFavourite) => updateItemWithId(selectedItemId, { isFavourite })}
+                changeRating={(rating) => updateItemWithId(selectedItemId, { rating })}
+                updateComments={(comments) => updateItemWithId(selectedItemId, { comments })}
                 onEdit={() => handleEditItem(selectedItemId)}
                 onDelete={() => handleDeleteItem(selectedItemId)}
             />
@@ -104,8 +101,8 @@ export const ListPage = () => {
                 onClick={(id) => handleViewItem(id)}
                 onEdit={(id) => handleEditItem(id)}
                 onDelete={handleDeleteItem}
-                toggleFavourite={toggleItemFavourite}
-                changeRating={changeItemRating}
+                toggleFavourite={(id, isFavourite) => updateItemWithId(id, { isFavourite })}
+                changeRating={(id, rating) => updateItemWithId(id, { rating })}
             />
         </div>
     );

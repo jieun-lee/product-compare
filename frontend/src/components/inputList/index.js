@@ -3,10 +3,11 @@ import { Input, Button, Icon } from 'semantic-ui-react';
 import styled from 'styled-components';
 
 const CloseButton = styled(Icon)`
+    cursor: pointer;    
     position: absolute;
-    right: 0;
-    margin: 10px !important;
-    cursor: pointer;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 4px;
 `;
 
 /**
@@ -32,7 +33,7 @@ const InputList = (props) => {
     return (
         <div style={{ display: 'flex', flexDirection: 'column' }}>
             {values.map((value, index) => (
-                <div key={index} style={{ marginBottom: '4px' }}>
+                <div key={index} style={{ marginBottom: '4px', position: 'relative' }}>
                     <Input
                         placeholder={placeholder}
                         value={value}

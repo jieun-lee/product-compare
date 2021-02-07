@@ -1,11 +1,33 @@
 import React from 'react';
-import { Modal, Image, Icon, List } from 'semantic-ui-react';
+import { Modal, Image, List } from 'semantic-ui-react';
 import FavouriteDisplay from '../../ratingDisplay/favourite';
 import RatingDisplay from '../../ratingDisplay/rating';
-import { COLORS } from '../../../util/const';
+import { COLORS, SIZES, PADDING } from '../../../util/const';
 import ArrowPair from '../../arrowPair';
 import FormLabel from '../../text/formLabel';
 import CardMenu from '../../cardMenu';
+import Comments from '../../comments';
+import styled from 'styled-components';
+
+const ItemViewModalHeader = styled.div`
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    padding: ${PADDING.MODAL_INNER_PADDING};
+`;
+
+const ItemViewModalContent = styled.div`
+    overflow-y: auto;
+    max-height: ${SIZES.MAX_VIEW_MODAL_HEIGHT};
+    padding: ${PADDING.MODAL_INNER_PADDING};
+`;
+
+const ItemViewModalFooter = styled.div`
+    position: absolute;
+    width: 100%;
+    margin-left: -24px;
+    bottom: -36px;
+`;
 
 /**
  * Modal for Viewing a List Item
@@ -14,25 +36,35 @@ import CardMenu from '../../cardMenu';
  * @param {Item} itemDetails
  * @param {function} toggleFavourite (isFavourite: boolean) => void
  * @param {function} changeRating (rating: number) => void
+ * @param {function} updateComments (comments: Comment[]) => void
  * @param {function} onEdit () => void
  * @param {function} onDelete () => void
  */
 const ItemViewModal = (props) => {
-    const { isModalOpen, closeModal, itemDetails, toggleFavourite, changeRating, onEdit, onDelete } = props;
+    const {
+        isModalOpen,
+        closeModal,
+        itemDetails,
+        toggleFavourite,
+        changeRating,
+        updateComments,
+        onEdit,
+        onDelete
+    } = props;
 
     // cannot show the modal without an item selected
     if (!itemDetails) return null;
 
-    const { name, price, imageUrl, description, details = [], isFavourite, rating } = itemDetails;
+    const { name, price, imageUrl, description, details = [], isFavourite, rating, comments = [] } = itemDetails;
 
     return (
         <Modal
             size="tiny"
             open={isModalOpen}
             onClose={closeModal}
-            style={{ padding: '24px' }}
+            style={{ padding: PADDING.MODAL_OUTER_PADDING }}
         >
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '16px' }}>
+            <ItemViewModalHeader>
                 <div style={{ display: 'flex' }}>
                     <FavouriteDisplay
                         isFavourite={isFavourite}
@@ -59,8 +91,8 @@ const ItemViewModal = (props) => {
                 {!!price && (
                     <h2 style={{ margin: 0, color: COLORS.PRICE }}>${price}</h2>
                 )}
-            </div>
-            <div>
+            </ItemViewModalHeader>
+            <ItemViewModalContent>
                 {!!imageUrl?.length && (
                     <Image
                         src={imageUrl}
@@ -77,12 +109,19 @@ const ItemViewModal = (props) => {
                         ))}
                     </List>
                 </div>
-            </div>
-            <div style={{ position: 'absolute', width: '100%', marginLeft: '-24px', bottom: '-36px' }}>
+                <div>
+                    <FormLabel style={{ fontSize: '16px', marginTop: '24px', marginBottom: 0 }}>Comments</FormLabel>
+                    <Comments
+                        comments={comments}
+                        updateComments={updateComments}
+                    />
+                </div>
+            </ItemViewModalContent>
+            <ItemViewModalFooter>
                 <ArrowPair
                     style={{ textAlign: 'right' }}
                 />
-            </div>
+            </ItemViewModalFooter>
         </Modal>
     )
 }

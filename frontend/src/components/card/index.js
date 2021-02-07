@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import styled from 'styled-components';
 import CardMenu from '../cardMenu';
 import { Image } from 'semantic-ui-react';
-import { DEFAULT_IMAGE } from '../../util/const';
+import { DEFAULT_IMAGE, COLORS } from '../../util/const';
 import FavouriteDisplay from '../../components/ratingDisplay/favourite';
 import RatingDisplay from '../ratingDisplay/rating';
 
@@ -79,7 +79,7 @@ const Card = (props) => {
                 />
                 <CardHeader>
                     <span>{name}</span>
-                    {price && <span style={{ color: '#609638' }}>${price}</span>}
+                    {price && <span style={{ color: COLORS.PRICE }}>${price}</span>}
                 </CardHeader>
                 <p>{description}</p>
             </div>

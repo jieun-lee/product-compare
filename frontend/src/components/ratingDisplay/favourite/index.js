@@ -4,7 +4,7 @@ import { Rating } from 'semantic-ui-react';
 /**
  * Displays the isFavourite boolean with a Heart
  * @param {boolean} isFavourite
- * @param {function} updateFavourite
+ * @param {function} updateFavourite (isFavourite) => void
  * @param {SemanticSIZES} size?
  * @param {style} style? passed into Rating to set styles
  */

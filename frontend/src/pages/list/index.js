@@ -8,6 +8,7 @@ import { getItemById, getItems } from '../../data/redux/selectors/items';
 import CardSection from '../../components/cardSection';
 import { getListById } from '../../data/redux/selectors/lists';
 import ItemFormModal from '../../components/modal/itemForm';
+import ItemViewModal from '../../components/modal/itemView';
 
 export const ListPage = () => {
     const { listId } = useParams();
@@ -18,7 +19,8 @@ export const ListPage = () => {
     const list = useSelector((state) => getListById(state, listId));
     const items = useSelector(getItems);
 
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isEditing, setIsEditing] = useState(false); // if the modal for create/edit is open
+    const [isViewing, setIsViewing] = useState(false); // if modal for view is open
     const [selectedItemId, setSelectedItemId] = useState('');
     const selectedItem = useSelector((state) => getItemById(state, selectedItemId));
     
@@ -26,29 +28,54 @@ export const ListPage = () => {
         dispatch(fetchItems(listId));
     }, [dispatch, listId]);
 
-    const handleEditItem = useCallback((id) => {
-        setSelectedItemId(id);
-        setIsModalOpen(true);
-    }, []);
-
     const onBackClicked = useCallback(() => {
         history.push('/lists');
     }, [history]);
 
-    const closeModal = useCallback(() => {
-        setIsModalOpen(false);
+    const handleEditItem = useCallback((id) => {
+        setSelectedItemId(id);
+        setIsEditing(true);
+    }, []);
+
+    const stopEditing = useCallback(() => {
+        setIsEditing(false);
         setSelectedItemId('');
     }, []);
+
+    const handleViewItem = useCallback((id) => {
+        setSelectedItemId(id);
+        setIsViewing(true);
+    }, []);
+
+    const stopViewing = useCallback(() => {
+        setIsViewing(false);
+        setSelectedItemId('');
+    }, []);
+
+    const toggleItemFavourite = useCallback((id, isFavourite) => {
+        dispatch(updateItem(id, { isFavourite: isFavourite }));
+    }, [dispatch]);
+
+    const changeItemRating = useCallback((id, rating) => {
+        dispatch(updateItem(id, { rating: rating }));
+    }, [dispatch]);
 
     return (!user) ? <Redirect to="/login" /> : (!list) ? <Redirect to="/lists" /> : (
         <div style={{ padding: '12px' }}>
             <ItemFormModal
                 isNew={!selectedItemId}
-                isModalOpen={isModalOpen}
-                closeModal={closeModal}
+                isModalOpen={isEditing}
+                closeModal={stopEditing}
                 listId={listId}
                 itemId={selectedItemId}
                 savedItem={selectedItem}
+            />
+            <ItemViewModal
+                isModalOpen={isViewing}
+                closeModal={stopViewing}
+                itemDetails={selectedItem}
+                toggleFavourite={(isFavourite) => toggleItemFavourite(selectedItemId, isFavourite)}
+                changeRating={(rating) => changeItemRating(selectedItemId, rating)}
             />
             <h2 style={{ margin: '12px' }}>
                 <Icon
@@ -58,16 +85,17 @@ export const ListPage = () => {
                 />
                 {list.name}
             </h2>
-            <Button onClick={() => setIsModalOpen(true)} style={{ marginLeft: '12px', marginBottom: '24px' }}>
+            <Button onClick={() => setIsEditing(true)} style={{ marginLeft: '12px', marginBottom: '24px' }}>
                 Add New Item
             </Button>
             <CardSection
                 data={items}
                 dataType="Item"
+                onClick={(id) => handleViewItem(id)}
                 onEdit={(id) => handleEditItem(id)}
                 onDelete={(id) => dispatch(deleteItem(id))}
-                toggleFavourite={(id, isFavourite) => dispatch(updateItem(id, { isFavourite: isFavourite }))}
-                changeRating={(id, rating) => dispatch(updateItem(id, { rating: rating }))}
+                toggleFavourite={toggleItemFavourite}
+                changeRating={changeItemRating}
             />
         </div>
     );

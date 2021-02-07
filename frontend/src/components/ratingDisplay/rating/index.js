@@ -4,7 +4,7 @@ import { Rating } from 'semantic-ui-react';
 /**
  * Displays the rating with stars
  * @param {number} rating
- * @param {function} updateRating
+ * @param {function} updateRating (rating) => void
  * * @param {style} style? passed into Rating to set styles
  */
 const RatingDisplay = (props) => {

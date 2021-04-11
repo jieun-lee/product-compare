@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import styled from 'styled-components';
-import { Icon, Popup } from 'semantic-ui-react';
+import { Icon, Popup, Label } from 'semantic-ui-react';
 
 const ActionIcon = styled(Icon)`
     &&& {
@@ -13,12 +13,13 @@ const ActionIcon = styled(Icon)`
  * Ellipsis menu with action menus in a popup
  * @param {Direction} direction? direction of icon
  * @param {Size} size? size of icon
+ * @param {boolean} isArchived? whether item is archived
+ * @param {function} toggleArchived? (isArchived: boolean) => void
  * @param {function} onEdit? () => void
- * @param {function} onArchive? () => void
  * @param {function} onDelete? () => void
  */
 const ActionPopup = (props) => {
-    const { direction = 'horizontal', size, onEdit, onArchive, onDelete } = props;
+    const { direction = 'horizontal', size, isArchived, toggleArchived, onEdit, onDelete } = props;
     const [isOpen, setIsOpen] = useState(false);
 
     const handleEdit = useCallback((event) => {
@@ -30,8 +31,8 @@ const ActionPopup = (props) => {
     const handleArchive = useCallback((event) => {
         event.stopPropagation();
         setIsOpen(false);
-        onArchive();
-    }, [onArchive]);
+        toggleArchived(!isArchived);
+    }, [toggleArchived, isArchived]);
 
     const handleDelete = useCallback((event) => {
         event.stopPropagation();
@@ -51,7 +52,7 @@ const ActionPopup = (props) => {
                     size={size}
                     onClick={(e) => e.stopPropagation()}
                     name={`ellipsis ${direction}`}
-                    style={{ float: 'right', margin: 0, marginTop: '2px', cursor: 'pointer' }}
+                    style={{ float: 'right', margin: 0, marginTop: '4px', cursor: 'pointer', alignSelf: 'flex-start' }}
                 />
             )}
             on="click"
@@ -64,8 +65,10 @@ const ActionPopup = (props) => {
                 {onEdit && (
                     <ActionIcon name="edit" size="large" onClick={handleEdit} style={{ marginLeft: '2px', marginRight: '8px' }} />
                 )}
-                {onArchive && (
-                    <ActionIcon name="archive" size="large" onClick={handleArchive} style={{ marginRight: '10px' }} />
+                {toggleArchived && (
+                    isArchived
+                    ? <ActionIcon name="caret square up" size="large" onClick={handleArchive} style={{ marginRight: '10px' }} />
+                    : <ActionIcon name="archive" size="large" onClick={handleArchive} style={{ marginRight: '10px' }} />
                 )}
                 {onDelete && (
                     <ActionIcon name="trash alternate" size="large" onClick={handleDelete} />

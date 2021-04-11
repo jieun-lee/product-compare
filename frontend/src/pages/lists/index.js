@@ -56,8 +56,9 @@ export const ListsPage = () => {
                 data={lists}
                 onClick={(id) => history.push(`/list/${id}`)}
                 onEdit={(id) => handleEditList(id)}
+                toggleArchived={(id, isArchived) => dispatch(updateList(id, { isArchived }))}
                 onDelete={(id) => dispatch(deleteList(id))}
-                toggleFavourite={(id, isFavourite) => dispatch(updateList(id, { isFavourite: isFavourite }))}
+                toggleFavourite={(id, isFavourite) => dispatch(updateList(id, { isFavourite }))}
             />
         </div>
     );

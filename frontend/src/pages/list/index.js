@@ -98,6 +98,7 @@ export const ListPage = () => {
                 changeRating={(rating) => updateItemWithId(selectedItemId, { rating })}
                 updateComments={(comments) => updateItemWithId(selectedItemId, { comments })}
                 onEdit={() => handleEditItem(selectedItemId)}
+                toggleArchived={(isArchived) => updateItemWithId(selectedItemId, { isArchived })}
                 onDelete={() => handleDeleteItem(selectedItemId)}
             />
             <h2 style={{ margin: '12px' }}>
@@ -115,6 +116,7 @@ export const ListPage = () => {
                 data={items}
                 onClick={(id) => handleViewItem(id)}
                 onEdit={(id) => handleEditItem(id)}
+                toggleArchived={(id, isArchived) => updateItemWithId(id, { isArchived })}
                 onDelete={handleDeleteItem}
                 toggleFavourite={(id, isFavourite) => updateItemWithId(id, { isFavourite })}
                 changeRating={(id, rating) => updateItemWithId(id, { rating })}

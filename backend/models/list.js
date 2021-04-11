@@ -14,6 +14,10 @@ const listSchema = mongoose.Schema({
     isFavourite: {
         type: Boolean,
         default: false
+    },
+    isArchived: {
+        type: Boolean,
+        default: false
     }
 });
 

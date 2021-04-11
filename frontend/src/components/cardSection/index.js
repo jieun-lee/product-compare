@@ -12,13 +12,17 @@ const CardWrapper = styled.div`
  * @param {object} data object with key-value pairs of items to display
  * @param {function} onClick callback function when a single card is clicked
  * @param {function} onEdit callback function when we click edit
+ * @param {function} toggleArchived callback function when we click archive
  * @param {function} onDelete callback function when we click delete
+ * @param {function} toggleFavourite callback function when we click favourite
+ * @param {function} changeRating callback function to change the rating
  */
 const CardSection = (props) => {
     const {
         data,
         onClick,
         onEdit,
+        toggleArchived,
         onDelete,
         toggleFavourite,
         changeRating
@@ -34,6 +38,10 @@ const CardSection = (props) => {
         if (onEdit) {
             return () => onEdit(id);
         } else return undefined;
+    }
+
+    const handleToggleArchived = (id, isArchived) => {
+        if (toggleArchived) toggleArchived(id, isArchived);
     }
     
     const handleItemDelete = (id) => {
@@ -61,9 +69,11 @@ const CardSection = (props) => {
                         imageUrl={data[id].imageUrl}
                         description={data[id].description}
                         rating={data[id].rating}
+                        isArchived={data[id].isArchived}
                         isFavourite={data[id].isFavourite}
                         onCardClick={handleItemClick(id)}
                         onEdit={handleItemEdit(id)}
+                        toggleArchived={(isArchived) => handleToggleArchived(id, isArchived)}
                         onDelete={handleItemDelete(id)}
                         toggleFavourite={(isFavourite) => handleToggleFavourite(id, isFavourite)}
                         changeRating={(rating) => handleChangeRating(id, rating)}

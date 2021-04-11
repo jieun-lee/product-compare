@@ -41,6 +41,7 @@ const CardHeader = styled.h3`
  * @param {boolean} rating?
  * @param {function} onCardClick?
  * @param {function} onEdit?
+ * @param {function} toggleArchived?
  * @param {function} onDelete?
  */
 const Card = (props) => {
@@ -49,10 +50,12 @@ const Card = (props) => {
         price,
         imageUrl,
         description,
+        isArchived = false,
         isFavourite = false,
         rating,
         onCardClick,
         onEdit,
+        toggleArchived,
         onDelete,
         toggleFavourite,
         changeRating
@@ -90,6 +93,8 @@ const Card = (props) => {
                     />
                 )}
                 <ActionPopup
+                    isArchived={isArchived}
+                    toggleArchived={toggleArchived}
                     onEdit={onEdit}
                     onDelete={onDelete}
                 />

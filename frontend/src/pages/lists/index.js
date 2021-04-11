@@ -9,8 +9,7 @@ import { Button, Sidebar } from 'semantic-ui-react';
 import CardSection from '../../components/cardSection';
 import ListFormModal from '../../components/modal/listForm';
 import ArchivedAccordion from '../../components/archived/accordion';
-import ListsSidebar from '../../components/sidebar/lists';
-import SidebarToggle from '../../components/sidebar/toggle';
+import ListsSidebarWrapper from '../../components/sidebar/lists';
 
 export const ListsPage = () => {
     const dispatch = useDispatch();
@@ -59,48 +58,41 @@ export const ListsPage = () => {
     }, []);
 
     return (!user) ? <Redirect to="/login" /> : (
-        <Sidebar.Pushable>
-            <ListsSidebar
-                isVisible={isSidebarVisible}
-                setIsVisible={setIsSidebarVisible}
-            />
-            <Sidebar.Pusher dimmed={isSidebarVisible}>
-                <div style={{ padding: '12px' }}>
-                <SidebarToggle setIsSidebarVisible={setIsSidebarVisible} />
-                    <ListFormModal
-                        isNew={!selectedListId}
-                        isModalOpen={isModalOpen}
-                        closeModal={closeModal}
-                        user={user}
-                        listId={selectedListId}
-                        savedList={selectedList}
-                    />
-                    <h2 style={{ margin: '12px' }}>My Lists</h2>
+        <ListsSidebarWrapper isVisible={isSidebarVisible} setIsVisible={setIsSidebarVisible}>
+            <div style={{ padding: '12px' }}>
+                <ListFormModal
+                    isNew={!selectedListId}
+                    isModalOpen={isModalOpen}
+                    closeModal={closeModal}
+                    user={user}
+                    listId={selectedListId}
+                    savedList={selectedList}
+                />
+                <h2 style={{ margin: '12px' }}>My Lists</h2>
                     <Button onClick={() => setIsModalOpen(true)} style={{ marginLeft: '12px', marginBottom: '24px' }}>
                         Add New List
                     </Button>
-                    <CardSection
-                        data={mainLists}
-                        onClick={(id) => history.push(`/list/${id}`)}
-                        onEdit={(id) => handleEditList(id)}
-                        toggleArchived={(id, isArchived) => dispatch(updateList(id, { isArchived }))}
-                        onDelete={(id) => dispatch(deleteList(id))}
-                        toggleFavourite={(id, isFavourite) => dispatch(updateList(id, { isFavourite }))}
-                    />
-                    {archivedLists.length > 0 && (
-                        <ArchivedAccordion>
-                            <CardSection
-                                data={archivedLists}
-                                onClick={(id) => history.push(`/list/${id}`)}
-                                onEdit={(id) => handleEditList(id)}
-                                toggleArchived={(id, isArchived) => dispatch(updateList(id, { isArchived }))}
-                                onDelete={(id) => dispatch(deleteList(id))}
-                                toggleFavourite={(id, isFavourite) => dispatch(updateList(id, { isFavourite }))}
-                            />
-                        </ArchivedAccordion>
-                    )}
-                </div>
-            </Sidebar.Pusher>
-        </Sidebar.Pushable>
+                <CardSection
+                    data={mainLists}
+                    onClick={(id) => history.push(`/list/${id}`)}
+                    onEdit={(id) => handleEditList(id)}
+                    toggleArchived={(id, isArchived) => dispatch(updateList(id, { isArchived }))}
+                    onDelete={(id) => dispatch(deleteList(id))}
+                    toggleFavourite={(id, isFavourite) => dispatch(updateList(id, { isFavourite }))}
+                />
+                {archivedLists.length > 0 && (
+                    <ArchivedAccordion>
+                        <CardSection
+                            data={archivedLists}
+                            onClick={(id) => history.push(`/list/${id}`)}
+                            onEdit={(id) => handleEditList(id)}
+                            toggleArchived={(id, isArchived) => dispatch(updateList(id, { isArchived }))}
+                            onDelete={(id) => dispatch(deleteList(id))}
+                            toggleFavourite={(id, isFavourite) => dispatch(updateList(id, { isFavourite }))}
+                        />
+                    </ArchivedAccordion>
+                )}
+            </div>
+        </ ListsSidebarWrapper>
     );
 }

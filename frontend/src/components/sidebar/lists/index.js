@@ -1,6 +1,8 @@
 import React from 'react';
 import BaseSidebar from '../index';
 import styled from 'styled-components';
+import { Sidebar } from 'semantic-ui-react';
+import SidebarToggle from '../toggle';
 
 const StyledHeader = styled.h3`
     margin: 0;
@@ -11,13 +13,20 @@ const StyledHeader = styled.h3`
  * @param {boolean} isVisible
  * @param {function} setIsVisible
  */
-const ListsSidebar = (props) => {
-    const { isVisible, setIsVisible } = props;
+const ListsSidebarWrapper = (props) => {
+    const { isVisible, setIsVisible, children } = props;
     return (
-        <BaseSidebar isVisible={isVisible} setIsVisible={setIsVisible}>
-            <StyledHeader>Settings</StyledHeader>
-        </BaseSidebar>
+        <Sidebar.Pushable>
+            <BaseSidebar isVisible={isVisible} setIsVisible={setIsVisible}>
+                <StyledHeader>Settings</StyledHeader>
+                {/* Lists Sidebar Content Here */}
+            </BaseSidebar>
+            <Sidebar.Pusher dimmed={isVisible}>
+                <SidebarToggle setIsVisible={setIsVisible} />
+                {children}
+            </Sidebar.Pusher>
+        </Sidebar.Pushable>
     );
 }
 
-export default ListsSidebar;
+export default ListsSidebarWrapper;

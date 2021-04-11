@@ -1,7 +1,7 @@
 import React, { useEffect, useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useHistory, Redirect } from 'react-router-dom';
-import { Button, Icon } from 'semantic-ui-react';
+import { Button, Icon, Sidebar } from 'semantic-ui-react';
 import { fetchItems, deleteItem, updateItem } from '../../data/redux/actions/items';
 import { getUser } from '../../data/redux/selectors/user';
 import { getItemById, getItems } from '../../data/redux/selectors/items';
@@ -11,6 +11,8 @@ import ItemFormModal from '../../components/modal/itemForm';
 import ItemViewModal from '../../components/modal/itemView';
 import ArchivedAccordion from '../../components/archived/accordion';
 import ArchivedTag from '../../components/archived/tag';
+import ListSidebar from '../../components/sidebar/list';
+import SidebarToggle from '../../components/sidebar/toggle';
 
 export const ListPage = () => {
     const { listId } = useParams();
@@ -24,6 +26,7 @@ export const ListPage = () => {
     const [archivedItems, setArchivedItems] = useState([]);
     const [orderedItemKeys, setOrderedItemKeys] = useState([]);
 
+    const [isSidebarVisible, setIsSidebarVisible] = useState(false);
     const [isEditing, setIsEditing] = useState(false); // if the modal for create/edit is open
     const [isViewing, setIsViewing] = useState(false); // if modal for view is open
     const [selectedItemId, setSelectedItemId] = useState('');
@@ -94,53 +97,49 @@ export const ListPage = () => {
     }, [dispatch]);
 
     return (!user) ? <Redirect to="/login" /> : (!list) ? <Redirect to="/lists" /> : (
-        <div style={{ padding: '12px' }}>
-            <ItemFormModal
-                isNew={!selectedItemId}
-                isModalOpen={isEditing}
-                closeModal={stopEditing}
-                listId={listId}
-                itemId={selectedItemId}
-                savedItem={selectedItem}
+        <Sidebar.Pushable>
+            <ListSidebar
+                isVisible={isSidebarVisible}
+                setIsVisible={setIsSidebarVisible}
             />
-            <ItemViewModal
-                isModalOpen={isViewing}
-                closeModal={stopViewing}
-                itemDetails={selectedItem}
-                onBackClicked={() => onNextSelectedItem(false)}
-                onNextClicked={() => onNextSelectedItem(true)}
-                toggleFavourite={(isFavourite) => updateItemWithId(selectedItemId, { isFavourite })}
-                changeRating={(rating) => updateItemWithId(selectedItemId, { rating })}
-                updateComments={(comments) => updateItemWithId(selectedItemId, { comments })}
-                onEdit={() => handleEditItem(selectedItemId)}
-                toggleArchived={(isArchived) => updateItemWithId(selectedItemId, { isArchived })}
-                onDelete={() => handleDeleteItem(selectedItemId)}
-            />
-            <h2 style={{ margin: '12px', display: 'flex', alignItems: 'center' }}>
-                <Icon
-                    name='arrow alternate circle left outline'
-                    onClick={backToLists}
-                    style={{ cursor: 'pointer', marginTop: '-4px' }}
-                />
-                {list.name}
-                {list.isArchived && <ArchivedTag />}
-            </h2>
-            <Button onClick={() => setIsEditing(true)} style={{ marginLeft: '12px', marginBottom: '24px' }}>
-                Add New Item
-            </Button>
-            <CardSection
-                data={mainItems}
-                onClick={(id) => handleViewItem(id)}
-                onEdit={(id) => handleEditItem(id)}
-                toggleArchived={(id, isArchived) => updateItemWithId(id, { isArchived })}
-                onDelete={handleDeleteItem}
-                toggleFavourite={(id, isFavourite) => updateItemWithId(id, { isFavourite })}
-                changeRating={(id, rating) => updateItemWithId(id, { rating })}
-            />
-            {archivedItems.length > 0 && (
-                <ArchivedAccordion>
+            <Sidebar.Pusher dimmed={isSidebarVisible}>
+                <div style={{ padding: '12px', minHeight: '100vh' }}>
+                    <SidebarToggle setIsSidebarVisible={setIsSidebarVisible} />
+                    <ItemFormModal
+                        isNew={!selectedItemId}
+                        isModalOpen={isEditing}
+                        closeModal={stopEditing}
+                        listId={listId}
+                        itemId={selectedItemId}
+                        savedItem={selectedItem}
+                    />
+                    <ItemViewModal
+                        isModalOpen={isViewing}
+                        closeModal={stopViewing}
+                        itemDetails={selectedItem}
+                        onBackClicked={() => onNextSelectedItem(false)}
+                        onNextClicked={() => onNextSelectedItem(true)}
+                        toggleFavourite={(isFavourite) => updateItemWithId(selectedItemId, { isFavourite })}
+                        changeRating={(rating) => updateItemWithId(selectedItemId, { rating })}
+                        updateComments={(comments) => updateItemWithId(selectedItemId, { comments })}
+                        onEdit={() => handleEditItem(selectedItemId)}
+                        toggleArchived={(isArchived) => updateItemWithId(selectedItemId, { isArchived })}
+                        onDelete={() => handleDeleteItem(selectedItemId)}
+                    />
+                    <h2 style={{ margin: '12px', display: 'flex', alignItems: 'center' }}>
+                        <Icon
+                            name='arrow alternate circle left outline'
+                            onClick={backToLists}
+                            style={{ cursor: 'pointer', marginTop: '-4px' }}
+                        />
+                        {list.name}
+                        {list.isArchived && <ArchivedTag />}
+                    </h2>
+                    <Button onClick={() => setIsEditing(true)} style={{ marginLeft: '12px', marginBottom: '24px' }}>
+                        Add New Item
+                    </Button>
                     <CardSection
-                        data={archivedItems}
+                        data={mainItems}
                         onClick={(id) => handleViewItem(id)}
                         onEdit={(id) => handleEditItem(id)}
                         toggleArchived={(id, isArchived) => updateItemWithId(id, { isArchived })}
@@ -148,8 +147,21 @@ export const ListPage = () => {
                         toggleFavourite={(id, isFavourite) => updateItemWithId(id, { isFavourite })}
                         changeRating={(id, rating) => updateItemWithId(id, { rating })}
                     />
-                </ArchivedAccordion>
-            )}
-        </div>
+                    {archivedItems.length > 0 && (
+                        <ArchivedAccordion>
+                            <CardSection
+                                data={archivedItems}
+                                onClick={(id) => handleViewItem(id)}
+                                onEdit={(id) => handleEditItem(id)}
+                                toggleArchived={(id, isArchived) => updateItemWithId(id, { isArchived })}
+                                onDelete={handleDeleteItem}
+                                toggleFavourite={(id, isFavourite) => updateItemWithId(id, { isFavourite })}
+                                changeRating={(id, rating) => updateItemWithId(id, { rating })}
+                            />
+                        </ArchivedAccordion>
+                    )}
+                </div>
+            </Sidebar.Pusher>
+        </Sidebar.Pushable>
     );
 }

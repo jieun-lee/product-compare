@@ -9,6 +9,8 @@ import CardSection from '../../components/cardSection';
 import { getListById } from '../../data/redux/selectors/lists';
 import ItemFormModal from '../../components/modal/itemForm';
 import ItemViewModal from '../../components/modal/itemView';
+import ArchivedAccordion from '../../components/archived/accordion';
+import ArchivedTag from '../../components/archived/tag';
 
 export const ListPage = () => {
     const { listId } = useParams();
@@ -17,7 +19,9 @@ export const ListPage = () => {
 
     const user = useSelector(getUser);
     const list = useSelector((state) => getListById(state, listId));
-    const items = useSelector(getItems);
+    const allItems = useSelector(getItems);
+    const [mainItems, setMainItems] = useState([]);
+    const [archivedItems, setArchivedItems] = useState([]);
     const [orderedItemKeys, setOrderedItemKeys] = useState([]);
 
     const [isEditing, setIsEditing] = useState(false); // if the modal for create/edit is open
@@ -30,9 +34,20 @@ export const ListPage = () => {
     }, [dispatch, listId]);
 
     useEffect(() => {
-        // TODO: update items based on this order
-        if (items) setOrderedItemKeys(Object.keys(items));
-    }, [items]);
+        const main = [];
+        const archived = [];
+        Object.keys(allItems).map((i) => {
+            if (allItems[i].isArchived) {
+                archived.push(allItems[i]);
+            } else {
+                main.push(allItems[i]);
+            }
+        });
+        setMainItems(main);
+        setArchivedItems(archived);
+        // TODO: update items based on this order, also need to handle order with archived
+        if (allItems) setOrderedItemKeys(Object.keys(allItems));
+    }, [allItems]);
 
     const backToLists = useCallback(() => {
         history.push('/lists');
@@ -101,19 +116,20 @@ export const ListPage = () => {
                 toggleArchived={(isArchived) => updateItemWithId(selectedItemId, { isArchived })}
                 onDelete={() => handleDeleteItem(selectedItemId)}
             />
-            <h2 style={{ margin: '12px' }}>
+            <h2 style={{ margin: '12px', display: 'flex', alignItems: 'center' }}>
                 <Icon
                     name='arrow alternate circle left outline'
                     onClick={backToLists}
-                    style={{ cursor: 'pointer' }}
+                    style={{ cursor: 'pointer', marginTop: '-4px' }}
                 />
                 {list.name}
+                {list.isArchived && <ArchivedTag />}
             </h2>
             <Button onClick={() => setIsEditing(true)} style={{ marginLeft: '12px', marginBottom: '24px' }}>
                 Add New Item
             </Button>
             <CardSection
-                data={items}
+                data={mainItems}
                 onClick={(id) => handleViewItem(id)}
                 onEdit={(id) => handleEditItem(id)}
                 toggleArchived={(id, isArchived) => updateItemWithId(id, { isArchived })}
@@ -121,6 +137,19 @@ export const ListPage = () => {
                 toggleFavourite={(id, isFavourite) => updateItemWithId(id, { isFavourite })}
                 changeRating={(id, rating) => updateItemWithId(id, { rating })}
             />
+            {archivedItems.length > 0 && (
+                <ArchivedAccordion>
+                    <CardSection
+                        data={archivedItems}
+                        onClick={(id) => handleViewItem(id)}
+                        onEdit={(id) => handleEditItem(id)}
+                        toggleArchived={(id, isArchived) => updateItemWithId(id, { isArchived })}
+                        onDelete={handleDeleteItem}
+                        toggleFavourite={(id, isFavourite) => updateItemWithId(id, { isFavourite })}
+                        changeRating={(id, rating) => updateItemWithId(id, { rating })}
+                    />
+                </ArchivedAccordion>
+            )}
         </div>
     );
 }

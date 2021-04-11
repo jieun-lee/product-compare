@@ -9,7 +9,7 @@ const CardWrapper = styled.div`
 
 /**
  * Section for displaying a set of cards
- * @param {object} data object with key-value pairs of items to display
+ * @param {object} data array of items to display
  * @param {function} onClick callback function when a single card is clicked
  * @param {function} onEdit callback function when we click edit
  * @param {function} toggleArchived callback function when we click archive
@@ -60,26 +60,24 @@ const CardSection = (props) => {
 
     return (
         <CardWrapper>
-            {Object.keys(data).map((id) => {
-                return (!!data[id]) ? (
-                    <Card
-                        key={id}
-                        name={data[id].name}
-                        price={data[id].price} // TODO
-                        imageUrl={data[id].imageUrl}
-                        description={data[id].description}
-                        rating={data[id].rating}
-                        isArchived={data[id].isArchived}
-                        isFavourite={data[id].isFavourite}
-                        onCardClick={handleItemClick(id)}
-                        onEdit={handleItemEdit(id)}
-                        toggleArchived={(isArchived) => handleToggleArchived(id, isArchived)}
-                        onDelete={handleItemDelete(id)}
-                        toggleFavourite={(isFavourite) => handleToggleFavourite(id, isFavourite)}
-                        changeRating={(rating) => handleChangeRating(id, rating)}
-                    />
-                ) : null;
-            })}
+            {data.map((item) => (
+                <Card
+                    key={item._id}
+                    name={item.name}
+                    price={item.price} // TODO
+                    imageUrl={item.imageUrl}
+                    description={item.description}
+                    rating={item.rating}
+                    isArchived={item.isArchived}
+                    isFavourite={item.isFavourite}
+                    onCardClick={handleItemClick(item._id)}
+                    onEdit={handleItemEdit(item._id)}
+                    toggleArchived={(isArchived) => handleToggleArchived(item._id, isArchived)}
+                    onDelete={handleItemDelete(item._id)}
+                    toggleFavourite={(isFavourite) => handleToggleFavourite(item._id, isFavourite)}
+                    changeRating={(rating) => handleChangeRating(item._id, rating)}
+                />
+            ))}
         </CardWrapper>
     );
 }

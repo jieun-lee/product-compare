@@ -9,6 +9,7 @@ import RatingDisplay from '../../../ratingDisplay/rating';
 const StyledCard = styled.div`
     border: 1px solid #c4c4c4;
     border-radius: 4px;
+    background-color: white;
     width: 250px;
     margin: 12px;
     padding: 16px;

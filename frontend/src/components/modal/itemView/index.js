@@ -8,6 +8,7 @@ import FormLabel from '../../text/formLabel';
 import ActionPopup from '../../actionPopup';
 import Comments from '../components/comments';
 import styled from 'styled-components';
+import ArchivedTag from '../../archived/tag';
 
 const ItemViewModalHeader = styled.div`
     display: flex;
@@ -95,7 +96,7 @@ const ItemViewModal = (props) => {
                             {itemUrl && (
                                 <a target="_blank" rel="noreferrer" href={itemUrl} style={{ display: 'flex', alignSelf: 'flex-start', marginTop: '4px' }}>
                                     <LinkIcon name="linkify" size="small" />
-                                </a>  
+                                </a>
                             )}
                             <ActionPopup
                                 direction="vertical"
@@ -105,9 +106,7 @@ const ItemViewModal = (props) => {
                                 onEdit={onEdit}
                                 onDelete={onDelete}
                             />
-                            {isArchived && (
-                                <Button mini disabled style={{ padding: '4px 8px', marginLeft: '4px', alignSelf: 'flex-start', marginTop: '2px' }}>Archived</Button>
-                            )}
+                            {isArchived && <ArchivedTag style={{ marginLeft: '4px', alignSelf: 'flex-start' }} />}
                         </h2>
                         <RatingDisplay
                             rating={rating}

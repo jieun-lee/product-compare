@@ -3,6 +3,8 @@ export const DEFAULT_IMAGE = 'https://react.semantic-ui.com/images/wireframe/ima
 export const COLORS = {
     PRICE: '#609638',
     SECONDARY_TEXT: '#888888',
+    ARCHIVE: '#C5E8ED',
+    ARCHIVE_LIGHT: '#ECF7F9'
 }
 
 export const SIZES = {

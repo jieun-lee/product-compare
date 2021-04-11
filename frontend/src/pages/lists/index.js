@@ -8,13 +8,16 @@ import { clearItems } from '../../data/redux/actions/items';
 import { Button } from 'semantic-ui-react';
 import CardSection from '../../components/cardSection';
 import ListFormModal from '../../components/modal/listForm';
+import ArchivedAccordion from '../../components/archived/accordion';
 
 export const ListsPage = () => {
     const dispatch = useDispatch();
     const history = useHistory();
 
     const user = useSelector(getUser);
-    const lists = useSelector(getLists);
+    const allLists = useSelector(getLists);
+    const [mainLists, setMainLists] = useState([]);
+    const [archivedLists, setArchivedLists] = useState([]);
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedListId, setSelectedListId] = useState('');
@@ -27,6 +30,20 @@ export const ListsPage = () => {
     useEffect(() => {
         if (user?._id) dispatch(fetchLists(user._id));
     }, [dispatch, user]);
+
+    useEffect(() => {
+        const main = [];
+        const archived = [];
+        Object.keys(allLists).map((i) => {
+            if (allLists[i].isArchived) {
+                archived.push(allLists[i]);
+            } else {
+                main.push(allLists[i]);
+            }
+        });
+        setMainLists(main);
+        setArchivedLists(archived);
+    }, [allLists]);
 
     const handleEditList = useCallback((id) => {
         setSelectedListId(id);
@@ -53,13 +70,25 @@ export const ListsPage = () => {
                 Add New List
             </Button>
             <CardSection
-                data={lists}
+                data={mainLists}
                 onClick={(id) => history.push(`/list/${id}`)}
                 onEdit={(id) => handleEditList(id)}
                 toggleArchived={(id, isArchived) => dispatch(updateList(id, { isArchived }))}
                 onDelete={(id) => dispatch(deleteList(id))}
                 toggleFavourite={(id, isFavourite) => dispatch(updateList(id, { isFavourite }))}
             />
+            {archivedLists.length > 0 && (
+                <ArchivedAccordion>
+                    <CardSection
+                        data={archivedLists}
+                        onClick={(id) => history.push(`/list/${id}`)}
+                        onEdit={(id) => handleEditList(id)}
+                        toggleArchived={(id, isArchived) => dispatch(updateList(id, { isArchived }))}
+                        onDelete={(id) => dispatch(deleteList(id))}
+                        toggleFavourite={(id, isFavourite) => dispatch(updateList(id, { isFavourite }))}
+                    />
+                </ArchivedAccordion>
+            )}
         </div>
     );
 }

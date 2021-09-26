@@ -15,7 +15,7 @@
 3. `npm start`
 4. Login using "test"
 
-## App Screenshots
+<!-- ## App Screenshots
 
 #### Login Page
 ![alt text][login-page]
@@ -35,4 +35,4 @@
 
 [list-page]: https://github.com/jieun-lee/product-compare/raw/master/screenshots/productcompare3-list.jpg "List Page"
 
-[item-page]: https://github.com/jieun-lee/product-compare/raw/master/screenshots/productcompare4-item.jpg "Item View"
+[item-page]: https://github.com/jieun-lee/product-compare/raw/master/screenshots/productcompare4-item.jpg "Item View" -->

@@ -16,7 +16,7 @@ const StyledHeader = styled.h3`
 const ListsSidebarWrapper = (props) => {
     const { isVisible, setIsVisible, children } = props;
     return (
-        <Sidebar.Pushable>
+        <Sidebar.Pushable style={{ height: '100vh' }}>
             <BaseSidebar isVisible={isVisible} setIsVisible={setIsVisible}>
                 <StyledHeader>Settings</StyledHeader>
                 {/* Lists Sidebar Content Here */}
